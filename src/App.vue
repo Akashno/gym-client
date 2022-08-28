@@ -1,32 +1,44 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+  <v-app id="inspire">
+   <NavigationDrawer :drawer="drawer"/> 
+      <v-app-bar
+      app
+      absolute
+      elevation="0"
+      color="white"
+    >
+      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      </v-app-bar>
+    <v-main >
+      <router-view style="" class=""/>
+    </v-main>
+  </v-app>
 </template>
+<script>
+import NavigationDrawer from './components/NavigationDrawer.vue'
+import moment from 'moment'
+export default {
+  components:{
+    NavigationDrawer,
+  },
+  data(){
+    return {
+      drawer:true,
+      time:null,
+    }
+  },
+  mounted(){
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    this.setTime()
+    setInterval(()=>{
+       this.setTime()  
+    },1000)
+  },
+  methods:{
+    setTime(){
+      this.time = moment().format('hh:mm:ss a')
+    }
+  },
 }
+</script>
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
