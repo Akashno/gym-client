@@ -1,12 +1,12 @@
 <template>
 <v-container fluid >
-  <v-card width="100%" class="py-4 rounded-xl " outlined height="350px" >
+  <v-card width="100%" class="py-4 rounded-xl " outlined height="340px" >
     <span class="text-caption  ml-6 grey--text text--darken-2 ">Fee payment today</span>
   <v-virtual-scroll
   class="mt-4"
       :items="items"
       :item-height="60"
-      height="300"
+      height="260"
     >
       <template v-slot:default="{ item }">
         <v-list-item link>

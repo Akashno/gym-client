@@ -1,12 +1,12 @@
 <template>
 <v-container fluid >
-  <v-card width="100%" class="py-4 rounded-xl" outlined height="350px">
+  <v-card width="100%" class="py-4 rounded-xl" outlined height="340px">
     <span class="text-caption  ml-6 grey--text text--darken-2 ">Latest Joinees</span>
     <v-data-table
     disable-sort
     mobile-breakpoint="0"
     hide-default-footer
-    :height="$vuetify.breakpoint.smAndDown ? '100%':'290px'"
+    :height="$vuetify.breakpoint.smAndDown ? '100%':'240px'"
       :headers="headers"
       :items="clients"
       class="pa-2"
