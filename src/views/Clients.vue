@@ -27,6 +27,8 @@
 import AddClient from "../components/AddClient.vue";
 import EditClient from "../components/EditClient.vue";
 import moment from 'moment';
+import gql from 'graphql-tag'
+
 export default {
   components: {
     AddClient,
@@ -52,5 +54,18 @@ export default {
       ],
     };
   },
+  apollo: {
+  getAllClients () {
+    return {
+      query: gql`query getAllClients {
+        getAllClients{
+          user{
+            firstName
+          }
+        }
+      }`,
+    }
+  },
+},
 };
 </script>

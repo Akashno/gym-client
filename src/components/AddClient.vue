@@ -1,30 +1,22 @@
 <template>
-   <v-dialog
-      v-model="dialog"
-      :fullscreen="$vuetify.breakpoint.smAndDown"
-      width="500"
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn
-          icon
-          v-bind="attrs"
-          v-on="on"
-          outlined
-          class="red--text "
-        >
-        <v-icon>mdi-plus</v-icon>
-        </v-btn>
-      </template>
-
-      <v-card
-    class="mx-auto pa-4"
-    max-width="500"
+  <v-dialog
+    v-model="dialog"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
+    width="500"
   >
-    <v-card-title class="text-h6 font-weight-regular justify-space-between px-4" >
-      <span>Add New Client</span>
-      
-    </v-card-title>
- <v-row class="mt-6 mx-0" >
+    <template v-slot:activator="{ on, attrs }">
+      <v-btn icon v-bind="attrs" v-on="on" outlined class="red--text">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </template>
+
+    <v-card class="mx-auto pa-4" max-width="500">
+      <v-card-title
+        class="text-h6 font-weight-regular justify-space-between px-4"
+      >
+        <span>Add New Client</span>
+      </v-card-title>
+      <v-row class="mt-6 mx-0">
         <v-col cols="12" md="6" class="py-0">
           <v-text-field
             v-model="firstName"
@@ -101,23 +93,17 @@
         </v-col>
       </v-row>
 
-    <v-card-actions>
-      
-      <v-spacer></v-spacer>
-      <v-btn
-        color="primary"
-        depressed
-        @click="dialog = false"
-      >
-      Save 
-      </v-btn>
-    </v-card-actions>
-  </v-card>
-    </v-dialog> 
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="primary" depressed @click="createClient()">Create</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
 </template>
 <script>
 
 import moment from "moment";
+import gql from 'graphql-tag'
   export default {
     data: () => ({
       dialog:false,
@@ -129,6 +115,43 @@ import moment from "moment";
       dob: moment().format("YYYY-MM-DD"),
       doj: moment().format("YYYY-MM-DD"),
     }),
-
+    methods:{
+      createClient(){
+      this.$apollo.mutate({
+      // Query
+      mutation: gql`mutation createClient($input:ClientInput) {
+        createClient(input:$input) {
+          user{
+            firstName
+            lastName
+          }
+        }
+      }`,
+      // Parameters
+      variables: {
+        input:{
+        firstName:this.firstName,
+        lastName:this.lastName
+        }
+      },
+      // Update the cache with the result
+      // The query will be updated with the optimistic response
+      // and then with the real result of the mutation
+      // update: (store, { data: { addTag } }) => {
+      //   // Read the data from our cache for this query.
+      //   const { tags } = store.readQuery({ query: TAGS_QUERY })
+      //   // Add our tag from the mutation to the end
+      //   // We don't want to modify the object returned by readQuery directly:
+      //   // https://www.apollographql.com/docs/react/caching/cache-interaction/
+      //   const tagsCopy = tags.slice()
+      //   tagsCopy.push(addTag)
+      //   // Write our data back to the cache.
+      // },
+      // Optimistic UI
+      // Will be treated as a 'fake' result as soon as the request is made
+      // so that the UI can react quickly and the user be happy
+    })}
+  }
+      
   }
 </script>

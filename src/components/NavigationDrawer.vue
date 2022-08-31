@@ -1,6 +1,6 @@
 <template>
     <v-navigation-drawer
-      v-model="drawer"
+      v-model="isDrawer"
       app
     >
        <template v-slot:prepend>
@@ -54,5 +54,18 @@
             type:Boolean
         }
     },
+    watch:{
+        drawer:{
+          handler(){
+            this.isDrawer = this.drawer
+          }
+        },
+    },
+
+    data(){
+      return{
+        isDrawer:false
+      }
+    }
   }
 </script>

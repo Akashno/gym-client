@@ -100,7 +100,7 @@ export default {
   },
   data() {
     return {
-      clientInfo:null,
+      clientInfo:{},
       moment: moment,
       rightDrawer: false,
       isDobMenu: false,

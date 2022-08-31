@@ -7,7 +7,7 @@
       elevation="0"
       color="white"
     >
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-app-bar-nav-icon @click="drawer=!drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-avatar size="48" class="mr-2">
         <v-img src="https://img.freepik.com/free-vector/mysterious-mafia-man-wearing-hat_52683-34829.jpg?w=826&t=st=1661712397~exp=1661712997~hmac=d53b33096ba452fc66cfabeb537b2c7c24a2eff616c5c036f3403f94628d071c"></v-img>
@@ -28,12 +28,11 @@ export default {
   },
   data(){
     return {
-      drawer:true,
+      drawer:false,
       time:null,
     }
   },
   mounted(){
-
     this.setTime()
     setInterval(()=>{
        this.setTime()  
