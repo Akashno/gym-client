@@ -57,7 +57,7 @@
               ></v-text-field>
             </template>
             <v-date-picker
-              v-model="dob"
+             v-model="dob"
               no-title
               @input="isDobMenu = false"
             ></v-date-picker>
@@ -95,7 +95,9 @@
 
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn color="primary" depressed @click="createClient()">Create</v-btn>
+
+         <v-btn @click="dialog=false" outlined text>cancel</v-btn>
+        <v-btn :loading="loading" color="primary" depressed @click="createClient()">Create</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -106,50 +108,72 @@ import moment from "moment";
 import gql from 'graphql-tag'
   export default {
     data: () => ({
+      loading:false,
       dialog:false,
       moment: moment,
       isDobMenu: false,
       isDojMenu: false,
-      firstName: "Aksh",
-      lastName: "No",
+      firstName: "",
+      lastName: "",
       dob: moment().format("YYYY-MM-DD"),
       doj: moment().format("YYYY-MM-DD"),
     }),
     methods:{
       createClient(){
+        this.loading = true
       this.$apollo.mutate({
       // Query
       mutation: gql`mutation createClient($input:ClientInput) {
         createClient(input:$input) {
-          user{
-            firstName
-            lastName
-          }
+              _id
+              user {
+                _id
+                firstName
+                lastName
+                dob
+                doj
+                age
+              }
         }
       }`,
       // Parameters
       variables: {
         input:{
         firstName:this.firstName,
-        lastName:this.lastName
+        lastName:this.lastName,
+        dob:this.dob,
+        doj:this.doj
         }
       },
       // Update the cache with the result
       // The query will be updated with the optimistic response
       // and then with the real result of the mutation
-      // update: (store, { data: { addTag } }) => {
-      //   // Read the data from our cache for this query.
-      //   const { tags } = store.readQuery({ query: TAGS_QUERY })
-      //   // Add our tag from the mutation to the end
-      //   // We don't want to modify the object returned by readQuery directly:
-      //   // https://www.apollographql.com/docs/react/caching/cache-interaction/
-      //   const tagsCopy = tags.slice()
-      //   tagsCopy.push(addTag)
-      //   // Write our data back to the cache.
-      // },
-      // Optimistic UI
-      // Will be treated as a 'fake' result as soon as the request is made
-      // so that the UI can react quickly and the user be happy
+      update: (store, { data: { createClient } }) => {
+        const GET_ALL_CLIENTS = gql`
+          query getAllClients {
+            getAllClients {
+              _id
+              user {
+                _id
+                firstName
+                lastName
+                dob
+                doj
+                age
+              }
+            }
+          }
+        `
+        const data = store.readQuery({ query: GET_ALL_CLIENTS })
+        data.getAllClients.push(createClient)
+        store.writeQuery({ query: GET_ALL_CLIENTS, data })
+      },
+    }).then(()=>{
+      this.loading = false
+      this.dialog = false
+    }).catch((error)=>{
+      this.loading = false
+      console.log(error)
     })}
   }
       

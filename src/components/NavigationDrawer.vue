@@ -51,7 +51,7 @@
   export default {
     props:{
         drawer:{
-            type:Boolean
+            type:Boolean,
         }
     },
     watch:{
@@ -64,7 +64,7 @@
 
     data(){
       return{
-        isDrawer:false
+        isDrawer:true
       }
     }
   }

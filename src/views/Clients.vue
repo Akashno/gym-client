@@ -13,12 +13,21 @@
     </div>
     <v-data-table
       :headers="headers"
-      :items="clients"
+      :items="getAllClients"
       class="pa-2"
       loading-text="Loading... Please wait"
     >
+      <template v-slot:item.client="{ item }">
+        {{ `${item.user.firstName} ${item.user.lastName}` }}
+      </template>
+      <template v-slot:item.doj="{ item }">
+        {{ moment(new Date(parseInt(item.user.doj))).format(" MMMM DD YYYY") }}
+      </template>
+      <template v-slot:item.dob="{ item }">
+        {{ moment(new Date(parseInt(item.user.dob))).format(" MMMM DD YYYY") }}
+      </template>
       <template v-slot:item.action="{ item }">
-        <EditClient :client="item"/>
+        <EditClient :client="item" />
       </template>
     </v-data-table>
   </div>
@@ -26,8 +35,8 @@
 <script>
 import AddClient from "../components/AddClient.vue";
 import EditClient from "../components/EditClient.vue";
-import moment from 'moment';
-import gql from 'graphql-tag'
+import moment from "moment";
+import gql from "graphql-tag";
 
 export default {
   components: {
@@ -36,36 +45,41 @@ export default {
   },
   data() {
     return {
+      moment: moment,
       headers: [
         {
-          text: "Name",
+          text: "Client",
           align: "start",
           sortable: false,
-          value: "firstName",
+          value: "client",
         },
-        { text: "Age", value: "age" },
+        { text: "Age", value: "user.age" },
         { text: "Date of join", value: "doj" },
         { text: "Date of Birth", value: "dob" },
         { text: "Action", value: "action" },
       ],
-      clients: [
-        { firstName: "Akash ",lastName:"N O ", age: 23, doj: moment().format("YYYY-MM-DD"), dob: moment().format("YYYY-MM-DD") },
-        { firstName: "Vyshak",lastName:"P", age: 30,   doj: moment().format("YYYY-MM-DD"), dob: moment().format("YYYY-MM-DD") },
-      ],
     };
   },
   apollo: {
-  getAllClients () {
-    return {
-      query: gql`query getAllClients {
-        getAllClients{
-          user{
-            firstName
+    getAllClients() {
+      return {
+        query: gql`
+          query getAllClients {
+            getAllClients {
+              _id
+              user {
+                _id
+                firstName
+                lastName
+                dob
+                doj
+                age
+              }
+            }
           }
-        }
-      }`,
-    }
+        `,
+      };
+    },
   },
-},
 };
 </script>

@@ -1,7 +1,12 @@
 query getAllClients {
   getAllClients{
     user{
+      _id
       firstName
+      lastName
+      dob
+      doj
     }
+    _id
   }
 }
