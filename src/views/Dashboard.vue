@@ -1,23 +1,24 @@
 <template>
   <div>
-    <v-row dense no-gutters class="">
+    <v-row dense no-gutters class="" v-if="dashboard">
       <v-col cols="12" md="4">
-        <TotalGraph />
+        <TotalGraph :totalClients="dashboard.totalClients" />
       </v-col>
       <v-col cols="12" md="8">
-        <MonthGraph />
+        <MonthGraph :totalClientsThisMonth="dashboard.totalClientsThisMonth" />
       </v-col>
       <v-col cols="12" md="4">
-        <FeeToday class="" />
+        <FeeToday class="" :feePaymentsToday="dashboard.feePaymentsToday"/>
       </v-col>
       <v-col cols="12" md="8">
-        <LatestJoins class="" />
+        <LatestJoins class="" :latestJoins="dashboard.latestJoins" />
       </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import gql from "graphql-tag";
 import FeeToday from "../components/FeeToday";
 import LatestJoins from "../components/LatestJoins";
 import MonthGraph from "../components/MonthGraph";
@@ -32,5 +33,43 @@ export default {
     TotalGraph
     
   },
+apollo: {
+    dashboard() {
+      return {
+        query: gql`
+          query dashboard {
+            dashboard{
+            totalClients
+            totalClientsThisMonth
+            feePaymentsToday {
+              _id
+              user {
+                _id
+                firstName
+                lastName
+                dob
+                doj
+                age
+              }
+            }
+            latestJoins {
+              _id
+              user {
+                _id
+                firstName
+                lastName
+                dob
+                doj
+                age
+              }
+            }
+            }
+          }
+        `,
+            fetchPolicy: 'cache-and-network',
+
+      };
+    },
+  }
 };
 </script>

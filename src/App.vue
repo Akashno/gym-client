@@ -17,6 +17,7 @@
     <v-main >
       <router-view style="" class=""/>
     </v-main>
+     
   </v-app>
 </template>
 <script>

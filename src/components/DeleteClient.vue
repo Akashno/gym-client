@@ -36,8 +36,8 @@
     </v-row>
        <p class="text-center text-body-1 mt-8 mb-10">Delete Client</p>
       <v-row class="mx-0 mb-0">
-      <v-btn @click="dialog = false"  width="45%" class="mx-auto" text tile small>cancel</v-btn>
-      <v-btn :loading="loading"  @click="deleteClient" width="45%" class="mx-auto" outlined color="red"  small tile>Delete</v-btn>
+      <v-btn @click="dialog = false"  width="45%" class="mx-auto" text tile >cancel</v-btn>
+      <v-btn :loading="loading"  @click="deleteClient" width="45%" class="mx-auto" outlined color="red"   tile>Delete</v-btn>
       </v-row>
 </v-card>
       

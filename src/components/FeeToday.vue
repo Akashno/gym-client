@@ -4,7 +4,7 @@
     <span class="text-caption  ml-6 grey--text text--darken-2 ">Fee payment today</span>
   <v-virtual-scroll
   class="mt-4"
-      :items="items"
+      :items="feePaymentsToday"
       :item-height="60"
       height="260"
     >
@@ -23,20 +23,14 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.fullName }}</v-list-item-title>
+            <v-list-item-title>{{ item.user.firstName }}</v-list-item-title>
           </v-list-item-content>
 
-          <v-list-item-action>
-            <v-btn
-              depressed
-              small
-              text
-            >
-            Joined : 
-            {{item.doj}}
-
+          <v-list-item-action class="text-caption">
+            
+            
+            DOJ : {{moment(new Date(parseInt(item.user.doj))).format('MM-DD-YY')}}
               
-            </v-btn>
           </v-list-item-action>
         </v-list-item>
       </template>
@@ -48,18 +42,17 @@
 </template>
 
 <script>
+import moment from 'moment'
   export default {
-    data: () => ({
-      items:[
-        {color:"black",fullName:"Akash N O",initials:"AK",doj:"12/12/12"},
-        {color:"black",fullName:"Yaswanth R",initials:"YR",doj:"12/12/12"},
-        {color:"black",fullName:"Rony T",initials:"RT",doj:"12/12/12"},
-        {color:"black",fullName:"Babu K ",initials:"BK",doj:"12/12/12"},
+    data(){
+      return{
 
-      ]
-    }),
-
-
+    moment:moment
+      }
+    },
+    props:{
+      feePaymentsToday:Array
+    },
     methods: {
       genRandomIndex (length) {
         return Math.ceil(Math.random() * (length - 1))

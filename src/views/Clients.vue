@@ -17,6 +17,7 @@
       class="pa-2"
       loading-text="Loading... Please wait"
     >
+    
       <template v-slot:item.client="{ item }">
         {{ `${item.user.firstName} ${item.user.lastName}` }}
       </template>
@@ -60,6 +61,7 @@ export default {
       ],
     };
   },
+  
   apollo: {
     getAllClients() {
       return {

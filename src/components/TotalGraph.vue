@@ -3,7 +3,7 @@
   <v-card width="100%" class="py-4 rounded-xl" outlined height="280px">
     <v-row justify="center" class="mx-0 mt-10" >
       <div class="text-center">
-        <span class="grey--text font-weight-medium text-h2">456</span>
+        <span class="grey--text font-weight-medium text-h2">{{totalClients}}</span>
         <p class="text-center text-caption">Total Clients</p>
       </div>
     </v-row>
@@ -37,6 +37,9 @@
   ]
 
   export default {
+    props:{
+      totalClients:Number
+    },
     data: () => ({
       width: 2,
       radius: 10,

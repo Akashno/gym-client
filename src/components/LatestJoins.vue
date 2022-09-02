@@ -1,6 +1,6 @@
 <template>
 <v-container fluid >
-  <v-card width="100%" class="py-4 rounded-xl" outlined height="340px">
+  <v-card width="100%" class="pt-4 rounded-xl" outlined height="340px">
     <span class="text-caption  ml-6 grey--text text--darken-2 ">Latest Joinees</span>
     <v-data-table
     disable-sort
@@ -8,10 +8,19 @@
     hide-default-footer
     :height="$vuetify.breakpoint.smAndDown ? '100%':'240px'"
       :headers="headers"
-      :items="clients"
+      :items="latestJoins"
       class="pa-2"
       loading-text="Loading... Please wait"
     >
+<template v-slot:item.id="{ item,index }">
+  {{index + 1}}
+      </template>
+    <template v-slot:item.client="{ item }">
+        {{ `${item.user.firstName} ${item.user.lastName}` }}
+      </template>
+<template v-slot:item.doj="{ item }">
+  {{moment(new Date(parseInt(item.user.doj))).format('MMMM DD YYYY')}}
+      </template>
     </v-data-table>
   </v-card>
 </v-container>
@@ -21,21 +30,19 @@
 <script>
 import moment from 'moment'
   export default {
+    props:{latestJoins:Array},
     data: () => ({
+      moment:moment,
       headers: [
         { text: "No", value: "id" ,width:"20px"},
         {
           text: "Name",
           align: "start",
           sortable: false,
-          value: "firstName",
+          value: "client",
+          width:120
         },
-        { text: "Age", value: "age" },
         { text: "Date of join", value: "doj" ,width:"120px"},
-      ],
-      clients: [
-        {id:1, firstName: "Akash ",lastName:"N O ", age: 23, doj: moment().format("YYYY-MM-DD"), dob: moment().format("YYYY-MM-DD") },
-        {id:2 ,firstName: "Vyshak",lastName:"P", age: 30,   doj: moment().format("YYYY-MM-DD"), dob: moment().format("YYYY-MM-DD") },
       ],
     }),
 
