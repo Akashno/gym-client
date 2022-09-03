@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
-    <NavigationDrawer :drawer="drawer" v-if="$store.state.user"/>
-    <v-app-bar app absolute elevation="0" color="white" v-if="$store.state.user">
+    <NavigationDrawer :drawer="drawer" />
+    <v-app-bar app absolute elevation="0" color="white" >
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-avatar size="48" class="mr-2">

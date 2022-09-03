@@ -196,9 +196,11 @@ export default {
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { createClient } }) => {
+
+            debugger
             const CLIENTS = gql`
               query clients {
-                cilents {
+                clients {
                     _id
                     firstName
                     lastName
