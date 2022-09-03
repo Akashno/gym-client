@@ -6,7 +6,9 @@
        <template v-slot:prepend>
         <v-list-item two-line class="mb-5">
           <v-list-item-avatar size="80">
-              <v-img src="https://i.pinimg.com/736x/42/9d/63/429d631659a11a9eb666b103d811470a.jpg"> </v-img>
+              <v-img 
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTnXf4cf2JV3KFCwCvO6i4fcAGLmbuvRM2KCFubbvDsNitUxWIVuRbX4O0GU2_6eF4lAA&usqp=CAU"
+> </v-img>
           </v-list-item-avatar>
           <v-list-item-content class="ms-n6 " style="z-index:10;">
              <v-list-item-title class=" text-h6">

@@ -16,10 +16,10 @@
   {{index + 1}}
       </template>
     <template v-slot:item.client="{ item }">
-        {{ `${item.user.firstName} ${item.user.lastName}` }}
+        {{ `${item.firstName} ${item.lastName}` }}
       </template>
 <template v-slot:item.doj="{ item }">
-  {{moment(new Date(parseInt(item.user.doj))).format('MMMM DD YYYY')}}
+  {{moment(new Date(parseInt(item.doj))).format('MMMM DD YYYY')}}
       </template>
     </v-data-table>
   </v-card>

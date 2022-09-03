@@ -2,7 +2,7 @@
   <v-dialog
     v-model="dialog"
     :fullscreen="$vuetify.breakpoint.smAndDown"
-    width="500"
+   width="700"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn icon v-bind="attrs" v-on="on" outlined class="red--text">
@@ -10,7 +10,7 @@
       </v-btn>
     </template>
 
-    <v-card class="mx-auto pa-4" max-width="500">
+    <v-card class="mx-auto pa-4" max-width="700">
       <v-card-title
         class="text-h6 font-weight-regular justify-space-between px-4"
       >
@@ -19,7 +19,7 @@
       <v-row class="mt-6 mx-0">
         <v-col cols="12" md="6" class="py-0">
           <v-text-field
-            v-model="firstName"
+            v-model="client.firstName"
             dense
             label="First Name"
             outlined
@@ -28,8 +28,29 @@
         <v-col cols="12" md="" class="py-0">
           <v-text-field
             dense
-            v-model="lastName"
+            v-model="client.lastName"
             label="Last name"
+            outlined
+          ></v-text-field>
+        </v-col>
+      </v-row>
+      <v-row class=" mx-0">
+        <v-col cols="12" md="6" class="py-0">
+          <v-text-field
+            type="number"
+            pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
+            v-model="client.phone"
+            dense
+            label="Phone number"
+            outlined
+          ></v-text-field>
+        </v-col>
+        <v-col cols="12" md="" class="py-0">
+          <v-text-field
+            dense
+            type="email"
+            v-model="client.email"
+            label="Email Id"
             outlined
           ></v-text-field>
         </v-col>
@@ -47,7 +68,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                :value="moment(dob).format('DD/MM/YYYY')"
+                :value="moment(client.dob).format('DD/MM/YYYY')"
                 label="Date of Birth"
                 persistent-hint
                 v-bind="attrs"
@@ -57,7 +78,7 @@
               ></v-text-field>
             </template>
             <v-date-picker
-              v-model="dob"
+              v-model="client.dob"
               no-title
               @input="isDobMenu = false"
             ></v-date-picker>
@@ -75,7 +96,7 @@
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
-                :value="moment(doj).format('DD/MM/YYYY')"
+                :value="moment(client.doj).format('DD/MM/YYYY')"
                 label="Date of Joining"
                 persistent-hint
                 v-bind="attrs"
@@ -85,17 +106,21 @@
               ></v-text-field>
             </template>
             <v-date-picker
-              v-model="doj"
+              v-model="client.doj"
               no-title
               @input="isDojMenu = false"
             ></v-date-picker>
           </v-menu>
         </v-col>
-      </v-row>
 
+      </v-row>
+      <v-row class="mx-0">
+        <v-col class="py-0" cols="12" md="6">
+        <v-select dense outlined :items="['MALE','FEMALE']" v-model="client.gender"></v-select>
+        </v-col>
+      </v-row>
       <v-card-actions>
         <v-spacer></v-spacer>
-
         <v-btn @click="dialog = false" outlined text>cancel</v-btn>
         <v-btn
           :loading="loading"
@@ -119,22 +144,26 @@ export default {
     moment: moment,
     isDobMenu: false,
     isDojMenu: false,
-    firstName: "",
-    lastName: "",
-    dob: moment().subtract(18,'year').format("YYYY-MM-DD"),
-    doj: moment().format("YYYY-MM-DD"),
+    client:{
+      firstName:"",
+      lastName: "",
+      dob: moment().subtract(18,'year').format("YYYY-MM-DD"),
+      doj: moment().format("YYYY-MM-DD"),
+      gender:'MALE'
+    },
+    clientClone:{}
   }),
+  mounted(){
+    this.clientClone = {...this.client}
+  },
   computed: {
     isValid() {
-      return this.firstName && this.lastName && this.dob && this.doj;
+      return this.client.firstName && this.client.lastName && this.client.dob && this.client.doj && this.client.gender;
     },
   },
   methods: {
     resetForm(){
-      this.firstName = "",
-      this.lastName = "",
-      this.dob = moment().format("YYYY-MM-DD"),
-      this.doj= moment().format("YYYY-MM-DD")
+      this.client = {...this.clientClone}
 
     },
     createClient() {
@@ -145,57 +174,56 @@ export default {
           mutation: gql`
             mutation createClient($input: ClientInput) {
               createClient(input: $input) {
-                _id
-                user {
                   _id
                   firstName
                   lastName
+                  phone
+                  gender
+                  email
                   dob
                   doj
                   age
-                }
               }
             }
           `,
           // Parameters
           variables: {
             input: {
-              firstName: this.firstName,
-              lastName: this.lastName,
-              dob: this.dob,
-              doj: this.doj,
+              ...this.client
             },
           },
           // Update the cache with the result
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { createClient } }) => {
-            const GET_ALL_CLIENTS = gql`
-              query getAllClients {
-                getAllClients {
-                  _id
-                  user {
+            const CLIENTS = gql`
+              query clients {
+                cilents {
                     _id
                     firstName
                     lastName
+                    phone
+                    email
+                    gender
                     dob
                     doj
                     age
-                  }
                 }
               }
             `;
-            const data = store.readQuery({ query: GET_ALL_CLIENTS });
-            data.getAllClients.push(createClient);
-            store.writeQuery({ query: GET_ALL_CLIENTS, data });
+            const data = store.readQuery({ query: CLIENTS });
+            data.clients.push(createClient);
+            store.writeQuery({ query: CLIENTS, data });
           },
         })
         .then(() => {
+          this.$store.commit('setSnackBar',{color:'success',text:'New Client Added'})
           this.loading = false;
           this.dialog = false;
           this.resetForm()
         })
         .catch((error) => {
+          this.$store.commit('setSnackBar',{color:'error',text:'Something went wrong'})
           this.loading = false;
           console.log(error);
         });
@@ -203,3 +231,4 @@ export default {
   },
 };
 </script>
+

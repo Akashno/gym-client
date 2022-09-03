@@ -42,31 +42,25 @@ apollo: {
             totalClients
             totalClientsThisMonth
             feePaymentsToday {
-              _id
-              user {
                 _id
                 firstName
                 lastName
                 dob
                 doj
                 age
-              }
             }
             latestJoins {
-              _id
-              user {
                 _id
                 firstName
                 lastName
                 dob
                 doj
                 age
-              }
             }
             }
           }
         `,
-            fetchPolicy: 'cache-and-network',
+         fetchPolicy: 'cache-and-network',
 
       };
     },

@@ -13,19 +13,19 @@
     </div>
     <v-data-table
       :headers="headers"
-      :items="getAllClients"
+      :loading="loading"
+      :items="clients"
       class="pa-2"
       loading-text="Loading... Please wait"
     >
-    
       <template v-slot:item.client="{ item }">
-        {{ `${item.user.firstName} ${item.user.lastName}` }}
+        {{ `${item.firstName} ${item.lastName}` }}
       </template>
       <template v-slot:item.doj="{ item }">
-        {{ moment(new Date(parseInt(item.user.doj))).format(" MMMM DD YYYY") }}
+        {{ moment(new Date(parseInt(item.doj))).format(" MMMM DD YYYY") }}
       </template>
       <template v-slot:item.dob="{ item }">
-        {{ moment(new Date(parseInt(item.user.dob))).format(" MMMM DD YYYY") }}
+        {{ moment(new Date(parseInt(item.dob))).format(" MMMM DD YYYY") }}
       </template>
       <template v-slot:item.action="{ item }">
         <EditClient :client="item" />
@@ -46,6 +46,7 @@ export default {
   },
   data() {
     return {
+      loading: true,
       moment: moment,
       headers: [
         {
@@ -54,32 +55,34 @@ export default {
           sortable: false,
           value: "client",
         },
-        { text: "Age", value: "user.age" },
+        { text: "Age", value: "age" },
+        { text: "Phone", value: "phone" },
         { text: "Date of join", value: "doj" },
-        { text: "Date of Birth", value: "dob" },
         { text: "Action", value: "action" },
       ],
     };
   },
-  
   apollo: {
-    getAllClients() {
+    clients() {
       return {
         query: gql`
-          query getAllClients {
-            getAllClients {
+          query clients {
+            clients {
               _id
-              user {
-                _id
-                firstName
-                lastName
-                dob
-                doj
-                age
-              }
+              firstName
+              lastName
+              phone
+              email
+              gender
+              dob
+              doj
+              age
             }
           }
         `,
+        result({ loading }) {
+          this.loading = loading;
+        },
       };
     },
   },

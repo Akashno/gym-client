@@ -79,41 +79,42 @@ export default {
         // and then with the real result of the mutation
         update: (store, { data: { deleteClient } }) => {
       //   // Read the data from our cache for this query.
-        const GET_ALL_CLIENTS = gql`
-          query getAllClients {
-            getAllClients {
-              _id
-              user {
+        const CLIENTS  = gql`
+          query clients {
+            clients {
                 _id
                 firstName
                 lastName
+                phone
+                email
+                gender
                 dob
                 doj
                 age
-              }
             }
           }
         `
       
-        const data = store.readQuery({ query: GET_ALL_CLIENTS })
-        const clients = data.getAllClients.filter(client=>client._id !== this.clientId)
+        const data = store.readQuery({ query: CLIENTS })
+        const clients = data.clients.filter(client=>client._id !== this.clientId)
         // Add our tag from the mutation to the end
         // We don't want to modify the object returned by readQuery directly:
         // https://www.apollographql.com/docs/react/caching/cache-interaction/
-        store.writeQuery({ query: GET_ALL_CLIENTS, data:{...data,getAllClients:clients} })
+        store.writeQuery({ query: CLIENTS, data:{...data,clients:clients} })
         // Write our data back to the cache.
       },
         // Optimistic UI
         // Will be treated as a 'fake' result as soon as the request is made
         // so that the UI can react quickly and the user be happy
-      }).then((data)=>{
+      }).then(()=>{
+        this.$store.commit('setSnackBar',{color:'success',text:'Client Deleted Successfully'})
         this.loading = false
         this.dialog = false
         this.$emit('deleted')
 
-      }).catch((error)=>{
+      }).catch(()=>{
+        this.$store.commit('setSnackBar',{color:'error',text:'Something Went wrong'})
         this.loading = false
-        console.log(error)
       });
     }
     }

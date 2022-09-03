@@ -23,13 +23,13 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.user.firstName }}</v-list-item-title>
+            <v-list-item-title>{{ item.firstName }}</v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action class="text-caption">
             
             
-            DOJ : {{moment(new Date(parseInt(item.user.doj))).format('MM-DD-YY')}}
+            DOJ : {{moment(new Date(parseInt(item.doj))).format('MM-DD-YY')}}
               
           </v-list-item-action>
         </v-list-item>
