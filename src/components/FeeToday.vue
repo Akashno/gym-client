@@ -1,9 +1,10 @@
 <template>
 <v-container fluid >
   <v-card width="100%" class="py-4 rounded-xl " outlined height="340px" >
-    <span class="text-caption  ml-6 grey--text text--darken-2 ">Fee payment today</span>
+    <span class="text-caption  ml-6  text--darken-2 ">Fee payment today</span>
+    <p class="text-caption text-center mt-10" v-if="!feePaymentsToday.length" >No fee payments today</p>
   <v-virtual-scroll
-  class="mt-4"
+      class="mt-4"
       :items="feePaymentsToday"
       :item-height="60"
       height="260"
@@ -23,14 +24,11 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.firstName }}</v-list-item-title>
+            <v-list-item-title><Client :client="item"/></v-list-item-title>
           </v-list-item-content>
 
           <v-list-item-action class="text-caption">
-            
-            
             DOJ : {{moment(new Date(parseInt(item.doj))).format('MM-DD-YY')}}
-              
           </v-list-item-action>
         </v-list-item>
       </template>
@@ -42,8 +40,14 @@
 </template>
 
 <script>
+
+import Client from "../components/Client.vue";
 import moment from 'moment'
   export default {
+  components:{
+    Client
+
+  },
     data(){
       return{
 
@@ -52,11 +56,6 @@ import moment from 'moment'
     },
     props:{
       feePaymentsToday:Array
-    },
-    methods: {
-      genRandomIndex (length) {
-        return Math.ceil(Math.random() * (length - 1))
-      },
     },
   }
 </script>

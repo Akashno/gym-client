@@ -1,20 +1,20 @@
 <template>
   <div>
-    <v-btn outlined icon small @click="isDrawer = true">
+    <v-btn outlined icon small @click="isDrawer = true" title="Edit client details">
       <v-icon small>mdi-pencil</v-icon>
     </v-btn>
     <v-navigation-drawer
       :width="$vuetify.breakpoint.smAndDown ? '100%' : '800px'"
+    :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
       temporary
-      hide-overlay
       app
       right
       v-model="isDrawer"
-      class="pa-10"
+      class="pa-md-10 pa-4"
     >
       <v-row class="mt-2">
         <v-col cols="12" class="d-flex justify-space-between align-center">
-          <span class="text-h6 grey--text">Edit Client</span>
+          <span class="text-h6 ">Edit Client</span>
           <v-btn icon @click="isDrawer = false" outlined>
             <v-icon> mdi-close </v-icon>
           </v-btn>
@@ -38,7 +38,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-<v-row class="">
+      <v-row class="">
         <v-col cols="12" md="6" class="py-0">
           <v-text-field
             type="number"
@@ -117,12 +117,27 @@
           </v-menu>
         </v-col>
       </v-row>
-<v-row class="">
+      <v-row class="">
         <v-col class="py-0" cols="12" md="6">
-        <v-select dense  outlined :items="['MALE','FEMALE']" v-model="clientInfo.gender"></v-select>
+          <v-select
+            dense
+            outlined
+            :items="['MALE', 'FEMALE']"
+            v-model="clientInfo.gender"
+          ></v-select>
+        </v-col>
+
+        <v-col class="py-0 px-4" cols="12" md="6">
+          <v-switch
+            v-model="clientInfo.isActive"
+            class="mt-0"
+            hide-details
+            inset
+            :label="`Active `"
+          ></v-switch>
         </v-col>
       </v-row>
-      <v-row class="mx-0" justify="space-between">
+      <v-row class="mx-0 mt-10" justify="space-between">
         <DeleteClient :clientId="client._id" @deleted="deleted" />
         <v-btn
           :loading="loading"
@@ -152,7 +167,7 @@ export default {
     },
   },
   mounted() {
-    this.clientInfo = { ...this.client}; // need to find a better method to deep copy
+    this.clientInfo = { ...this.client }; // need to find a better method to deep copy
     if (this.clientInfo.dob) {
       this.dob = moment(new Date(parseInt(this.clientInfo.dob))).format(
         "YYYY-MM-DD"
@@ -188,15 +203,15 @@ export default {
           mutation: gql`
             mutation updateClient($input: ClientInput) {
               updateClient(input: $input) {
-                  _id
-                  firstName
-                  lastName
-                  phone
-                  email
-                  gender
-                  dob
-                  doj
-                  age
+                _id
+                firstName
+                lastName
+                phone
+                email
+                gender
+                isActive
+                dob
+                doj
               }
             }
           `,
@@ -208,46 +223,55 @@ export default {
               lastName: this.clientInfo.lastName,
               dob: this.dob,
               doj: this.doj,
-              phone:this.clientInfo.phone,
-              email:this.clientInfo.email,
-              gender:this.clientInfo.gender
+              phone: this.clientInfo.phone,
+              email: this.clientInfo.email,
+              gender: this.clientInfo.gender,
+              isActive: this.clientInfo.isActive,
             },
           },
           // Update the cache with the result
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { updateClient } }) => {
-          const CLIENTS = gql`
-            query clients {
-              clients {
+            const CLIENTS = gql`
+              query clients {
+                clients {
                   _id
                   firstName
                   lastName
                   phone
                   email
                   gender
+                  isActive
                   dob
                   doj
-                  age
+                }
               }
-            }
-          `
-          const data = store.readQuery({ query: CLIENTS })
-          let index = data.clients.findIndex((client)=>client._id === updateClient._id)
-          data.clients[index] = updateClient
-          store.writeQuery({ query: CLIENTS, data })
+            `;
+            const data = store.readQuery({ query: CLIENTS });
+            let index = data.clients.findIndex(
+              (client) => client._id === updateClient._id
+            );
+            data.clients[index] = updateClient;
+            store.writeQuery({ query: CLIENTS, data });
           },
           // Optimistic UI
           // Will be treated as a 'fake' result as soon as the request is made
           // so that the UI can react quickly and the user be happy
         })
         .then(() => {
-          this.$store.commit('setSnackBar',{color:'success',text:'Client info updated'})
+          this.$store.commit("setSnackBar", {
+            color: "success",
+            text: "Client info updated",
+          });
           this.loading = false;
           this.isDrawer = false;
         })
         .catch(() => {
-          this.$store.commit('setSnackBar',{color:'error',text:'Something Went wrong'})
+          this.$store.commit("setSnackBar", {
+            color: "error",
+            text: "Something Went wrong",
+          });
           this.loading = false;
         });
     },

@@ -1,8 +1,9 @@
 <template>
   <v-dialog
     v-model="dialog"
+    :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
     :fullscreen="$vuetify.breakpoint.smAndDown"
-   width="700"
+    width="700"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn icon v-bind="attrs" v-on="on" outlined class="red--text">
@@ -10,7 +11,7 @@
       </v-btn>
     </template>
 
-    <v-card class="mx-auto pa-4" max-width="700">
+    <v-card class="mx-auto pa-4" max-width="700" outlined >
       <v-card-title
         class="text-h6 font-weight-regular justify-space-between px-4"
       >
@@ -179,10 +180,10 @@ export default {
                   lastName
                   phone
                   gender
+                  isActive
                   email
                   dob
                   doj
-                  age
               }
             }
           `,
@@ -207,9 +208,9 @@ export default {
                     phone
                     email
                     gender
+                    isActive
                     dob
                     doj
-                    age
                 }
               }
             `;

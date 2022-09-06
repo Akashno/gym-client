@@ -8,6 +8,5 @@ query clients {
     gender
     dob
     doj
-    age
   }
 }

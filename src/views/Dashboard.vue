@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <v-row dense no-gutters class="" v-if="dashboard">
+  <div >
+    <v-row dense no-gutters class="" v-if="dashboard" >
       <v-col cols="12" md="4">
         <TotalGraph :totalClients="dashboard.totalClients" />
       </v-col>
@@ -47,7 +47,6 @@ apollo: {
                 lastName
                 dob
                 doj
-                age
             }
             latestJoins {
                 _id
@@ -55,7 +54,6 @@ apollo: {
                 lastName
                 dob
                 doj
-                age
             }
             }
           }

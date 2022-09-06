@@ -12,6 +12,7 @@
       <AddClient />
     </div>
     <v-data-table
+    mobile-breakpoint="0"
       :headers="headers"
       :loading="loading"
       :items="clients"
@@ -19,22 +20,38 @@
       loading-text="Loading... Please wait"
     >
       <template v-slot:item.client="{ item }">
-        {{ `${item.firstName} ${item.lastName}` }}
+        <Client  :client="item"/>
       </template>
+      <template v-slot:item.isActive="{ item }">
+        <v-chip
+        :disabled="!item.isActive"
+        outlined
+        :color="item.isActive ? 'blue':'' "
+        v-text="item.isActive ? 'Active':'Inactive'"
+      ></v-chip>
+            </template>
       <template v-slot:item.doj="{ item }">
         {{ moment(new Date(parseInt(item.doj))).format(" MMMM DD YYYY") }}
+      </template>
+<template v-slot:item.age="{ item }">
+        {{calculateAge(item.dob)}}
       </template>
       <template v-slot:item.dob="{ item }">
         {{ moment(new Date(parseInt(item.dob))).format(" MMMM DD YYYY") }}
       </template>
       <template v-slot:item.action="{ item }">
-        <EditClient :client="item" />
+     <v-row class="mx-0">
+        <EditClient :client="item" class="me-2"/>
+        <AddPayment :client="item"/>
+     </v-row>
       </template>
     </v-data-table>
   </div>
 </template>
 <script>
 import AddClient from "../components/AddClient.vue";
+import AddPayment from "../components/AddPayment.vue";
+import Client from "../components/Client.vue";
 import EditClient from "../components/EditClient.vue";
 import moment from "moment";
 import gql from "graphql-tag";
@@ -42,12 +59,23 @@ import gql from "graphql-tag";
 export default {
   components: {
     AddClient,
+    AddPayment,
     EditClient,
+    Client
+  },
+  methods:{
+    calculateAge(dob){
+         return Math.abs(moment(new Date(parseInt(dob))).diff(moment(),'years')) 
+    },
+    showClient(id){
+      this.$router.push({name:"Client",params:{'id':id} })
+    }
   },
   data() {
     return {
       loading: true,
       moment: moment,
+      clientDrawer:false,
       headers: [
         {
           text: "Client",
@@ -58,6 +86,7 @@ export default {
         { text: "Age", value: "age" },
         { text: "Phone", value: "phone" },
         { text: "Date of join", value: "doj" },
+        { text: "Active", value: "isActive" },
         { text: "Action", value: "action" },
       ],
     };
@@ -75,8 +104,8 @@ export default {
               email
               gender
               dob
+              isActive
               doj
-              age
             }
           }
         `,
@@ -88,3 +117,4 @@ export default {
   },
 };
 </script>
+
