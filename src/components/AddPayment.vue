@@ -4,7 +4,7 @@
     :fullscreen="$vuetify.breakpoint.smAndDown"
 
     :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
-    width="700"
+    width="500"
   >
     <template v-slot:activator="{ on, attrs }">
       <v-btn
@@ -21,7 +21,7 @@
       </v-btn>
     </template>
 
-    <v-card class="mx-auto pa-4" max-width="700" outlined>
+    <v-card class="mx-auto pa-4" max-width="500" outlined rounded="xl">
       <v-card-title
         class="text-body-1 font-weight-regular justify-space-between px-4"
       >
@@ -29,7 +29,7 @@
       </v-card-title>
       <v-card-text>
         <v-row class="mt-6 mx-0">
-          <v-col cols="12" md="6" class="py-0">
+          <v-col cols="12" md="12" class="py-0">
             <v-select
               v-model="month"
               outlined
@@ -41,7 +41,7 @@
             >
             </v-select>
           </v-col>
-          <v-col cols="12" md="6" class="py-0">
+          <v-col cols="12" md="12" class="py-0">
             <v-select
               v-model="year"
               outlined
@@ -53,7 +53,7 @@
           </v-col>
         </v-row>
         <v-row class="mx-0">
-          <v-col cols="12" md="6" class="py-0">
+          <v-col cols="12" md="12" class="py-0">
             <v-text-field v-model="amount" outlined label="Fee Amount" dense>
             </v-text-field>
           </v-col>

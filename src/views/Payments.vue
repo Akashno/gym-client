@@ -27,7 +27,7 @@
         <Client  :client="{...item,_id:item.user._id}"/>
       </template>
 <template v-slot:item.month="{ item }">
-    {{moment().month(item.month).subtract(1,'month').format('MMMM')}}
+    {{moment().month(item.month).subtract(1,'month').format('MMMM YYYY')}}
       </template>
 <template v-slot:item.createdAt="{ item }">
     {{moment(new Date(parseInt(item.createdAt))).format('DD MMMM YYYY')}}
@@ -57,12 +57,15 @@ export default {
           align: "start",
           sortable: false,
           value: "client",
+          width:100
         },
-        { text: "Paid On", value: "createdAt" },
-        { text: "Phone", value: "phone" },
-        { text: "Amount", value: "amount" },
-        { text: "Month", value: "month" },
-        { text: "Year", value: "year" },
+        { text: "Paid On", value: "createdAt" ,
+        
+          width:100
+        },
+        { text: "Phone", value: "phone",width:100 },
+        { text: "Month", value: "month" ,width:100},
+        { text: "Amount", value: "amount" ,width:100},
       ]
         }
 

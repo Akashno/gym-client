@@ -7,7 +7,7 @@
       class="mt-4"
       :items="feePaymentsToday"
       :item-height="60"
-      height="260"
+      height="247"
     >
       <template v-slot:default="{ item }">
         <v-list-item link>

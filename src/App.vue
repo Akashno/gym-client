@@ -4,18 +4,18 @@
     <v-app-bar app absolute elevation="0" color="">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
-      <v-btn @click="$vuetify.theme.dark=!$vuetify.theme.dark" icon>
+      <v-btn @click="setDarkMode()" icon>
       <v-icon v-if="$vuetify.theme.dark"> mdi-white-balance-sunny </v-icon>
       <v-icon v-else> mdi-moon-waning-crescent </v-icon>
       </v-btn>
       
-      <v-btn @click="logout" icon class="me-1">
+      <v-btn @click="logout" icon class="">
         <v-icon>mdi-location-exit</v-icon>
       </v-btn>
       
     </v-app-bar>
     <v-main>
-      <router-view style="" class="" />
+      <router-view style="" class=""  />
     </v-main>
 
     <v-snackbar
@@ -59,7 +59,16 @@ export default {
       this.setTime();
     }, 1000);
   },
+  created(){
+    const darkMode = JSON.parse(localStorage.getItem('darkMode'))
+    this.$vuetify.theme.dark = darkMode
+
+  },
   methods: {
+    setDarkMode(){
+      this.$vuetify.theme.dark=!this.$vuetify.theme.dark
+      localStorage.setItem('darkMode',this.$vuetify.theme.dark)
+    },
     setTime() {
       this.time = moment().format("hh:mm:ss a");
     },

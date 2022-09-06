@@ -1,6 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
+    :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
     class="rounded-xl"
     width="600px"
     :fullscreen="$vuetify.breakpoint.smAndDown"
@@ -90,9 +91,10 @@
               :key="index"
               width="100px"
               height="50px"
-              class="ma-2"
+              class="ma-2 ps-0 pe-4 "
+              title="Fee Paid"
             >
-              <v-chip color="success" class="mr-2" x-small>{{'paid'}}</v-chip>
+                <v-icon color="success" class="me-2" size="30">mdi-check-circle</v-icon>
               {{moment().month(month.month).format('MMMM')}}
             </v-chip>
           </v-row>
