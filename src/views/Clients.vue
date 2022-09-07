@@ -12,11 +12,12 @@
       <AddClient />
     </div>
     <v-data-table
-    mobile-breakpoint="0"
+      mobile-breakpoint="0"
+      :options="options"
       :headers="headers"
       :loading="loading"
       :items="clients"
-      class="pa-2"
+      class="ma-4"
       loading-text="Loading... Please wait"
     >
       <template v-slot:item.client="{ item }">
@@ -41,7 +42,7 @@
       </template>
       <template v-slot:item.action="{ item }">
      <v-row class="mx-0">
-        <EditClient :client="item" class="me-2"/>
+        <EditClient :client="item" class="me-2" style="cursor:pointer;" />
         <AddPayment :client="item"/>
      </v-row>
       </template>
@@ -74,8 +75,15 @@ export default {
   data() {
     return {
       loading: true,
+      options:{
+        page:1,
+        itemsPerPage:10
+      },
       moment: moment,
       clientDrawer:false,
+      search:"",
+      limit:10,
+      skip:0,
       headers: [
         {
           text: "Client",
@@ -90,6 +98,15 @@ export default {
         { text: "Action", value: "action" },
       ],
     };
+  },
+  watch:{
+    options:{
+      handler(){
+        this.limit = this.options.itemsPerPage
+        this.skip = this.options.itemsPerPage * this.options.page
+
+      }
+    }
   },
   apollo: {
     clients() {
@@ -112,6 +129,12 @@ export default {
         result({ loading }) {
           this.loading = loading;
         },
+        variables(){
+          return{
+            limit:this.limit,
+            skip:this.skip
+          }
+        }
       };
     },
   },

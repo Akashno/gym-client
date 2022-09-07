@@ -226,9 +226,19 @@ export default {
           this.resetForm()
         })
         .catch((error) => {
+          this.loading =false
+          const err = JSON.parse(JSON.stringify(error));
+          if (err.message.includes("PHONE_EXISTS")) {
+          this.$store.commit('setSnackBar',{color:'error',text:'Phone already exists'})
+          }
+          else if (err.message.includes("EMAIL_EXISTS")) {
+          this.$store.commit('setSnackBar',{color:'error',text:'email already exists'})
+          }
+          else{
           this.$store.commit('setSnackBar',{color:'error',text:'Something went wrong'})
           this.loading = false;
           console.log(error);
+          }
         });
     },
   },

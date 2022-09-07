@@ -181,15 +181,20 @@ export default {
                 }
               }
             `;
-
             const data = store.readQuery({ query: PAYMENTS });
+            if(data.payments){
             data.payments.push(addPayment);
-
             store.writeQuery({ query: PAYMENTS, data });
+            }
+
             const PAYMENTSBYCLIENT = gql`
               query paymentsByClient($user: ID!, $year: Int) {
                 paymentsByClient(user: $user, year: $year) {
                   _id
+                  user{
+                    _id
+                  }
+                  createdAt
                   firstName
                   lastName
                   phone
@@ -200,13 +205,14 @@ export default {
                 }
               }
             `;
-            console.log(this.client._id,this.year)
             const data2 = store.readQuery({
               query: PAYMENTSBYCLIENT,
               variables: { user: this.client._id, year: this.year },
             });
-            data2.paymentsByClient.push(addPayment);
-            store.writeQuery({ query: PAYMENTSBYCLIENT, data2 });
+            if(data2 && data2.paymentsByClient){
+              data2.paymentsByClient.push(addPayment);
+              store.writeQuery({ query: PAYMENTSBYCLIENT, data2 });
+            }
           },
         })
         .then(() => {

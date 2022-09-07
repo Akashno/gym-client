@@ -22,7 +22,7 @@
       <v-card
         height="100px"
         width="100px"
-        color="#edeff2"
+        color="grey"
         flat
         rounded="pill"
         class="mx-auto d-flex justify-center lighten-3 align-center"
@@ -41,8 +41,8 @@
         </span> -->
       </v-card>
       <!--  -->
-      <v-card-text class="text-center text-h5">{{
-        client.firstName + " " + client.lastName
+      <v-card-text v-if="clientById" class="text-center text-h5">{{
+        clientById.firstName + " " + clientById.lastName
       }}</v-card-text>
       <v-row class="mx-0" justify="center" v-if="clientById">
         <v-col cols="12" md="2">
@@ -68,7 +68,7 @@
           </v-card>
         </v-col>
       </v-row>
-      <v-divider class="my-4"></v-divider>
+      <v-divider class="mt-3 mb-6"></v-divider>
       <v-row class="mx-0 ">
         <v-col class="mx-md-10">
           <v-row justify="space-between" class="mx-0" align="center">
@@ -80,11 +80,14 @@
 
           <!--  -->
           <!--  -->
-          <v-row class="mx-0 mt-4   pa-2 rounded-xl grey" >
+
+          <v-card flat tile class="transparent rounded-xl grey" min-height="200px">
+
+          <v-row class="mx-0 mt-3   pa-2 " >
                <v-select  :items="yearList" v-model="year" dense hide-details  outlined class="col-1 mx-2 my-2 rounded-xl">
               </v-select>
 
-          <span class="d-block text-caption  my-2 mx-auto" v-if="paymentsByClient && !paymentsByClient.length">No fee payments for  {{year}} </span>
+          <span class="d-block text-caption mt-4  mb-2 mx-auto" v-if="paymentsByClient && !paymentsByClient.length">No fee payments for  {{year}} </span>
             <v-chip
               v-for="(month,index) in paymentsByClient"
               outlined
@@ -98,6 +101,7 @@
               {{moment().month(month.month).format('MMMM')}}
             </v-chip>
           </v-row>
+          </v-card>
         </v-col>
       </v-row>
     </v-card>

@@ -20,7 +20,7 @@
       :headers="headers"
       :loading="loading"
       :items="payments"
-      class="pa-2"
+      class="ma-4"
       loading-text="Loading... Please wait"
     >
 <template v-slot:item.client="{ item }">
