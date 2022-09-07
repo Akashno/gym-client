@@ -11,6 +11,18 @@
       <h2 class="">Clients</h2>
       <AddClient />
     </div>
+    <v-row class="mx-1">
+      <v-col cols="12" md="4">
+         <v-text-field
+        v-model="search"
+        dense
+        append-icon="mdi-magnify"
+        label="Search"
+        outlined
+        hide-details
+      ></v-text-field>
+      </v-col>
+    </v-row>
     <v-data-table
       mobile-breakpoint="0"
       :options="options"
@@ -104,7 +116,6 @@ export default {
       handler(){
         this.limit = this.options.itemsPerPage
         this.skip = this.options.itemsPerPage * this.options.page
-
       }
     }
   },
@@ -112,8 +123,8 @@ export default {
     clients() {
       return {
         query: gql`
-          query clients {
-            clients {
+          query clients($input:PageInput!,$search:String) {
+            clients(input:$input,search:$search) {
               _id
               firstName
               lastName
@@ -131,8 +142,11 @@ export default {
         },
         variables(){
           return{
-            limit:this.limit,
-            skip:this.skip
+            input:{
+              limit:this.limit,
+              skip:this.skip
+            },
+            search:this.search
           }
         }
       };
