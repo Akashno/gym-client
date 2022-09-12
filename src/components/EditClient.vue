@@ -12,6 +12,7 @@
       v-model="isDrawer"
       class="pa-md-10 pa-4"
     >
+
       <v-row class="mt-2">
         <v-col cols="12" class="d-flex justify-space-between align-center">
           <span class="text-h6 ">Edit Client</span>

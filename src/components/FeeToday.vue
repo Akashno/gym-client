@@ -1,7 +1,7 @@
 <template>
 <v-container fluid >
   <v-card width="100%" class="py-4 rounded-xl " outlined height="340px" >
-    <span class="text-caption  ml-6  text--darken-2 ">Fee payment today</span>
+    <span class="text-caption  ml-6  text--darken-2 ">Pending fee for current month</span>
     <p class="text-caption text-center mt-10" v-if="!feePaymentsToday.length" >No fee payments today</p>
   <v-virtual-scroll
       class="mt-4"
@@ -28,7 +28,7 @@
           </v-list-item-content>
 
           <v-list-item-action class="text-caption">
-            DOJ : {{moment(new Date(parseInt(item.doj))).format('MM-DD-YY')}}
+            DOJ : {{moment(new Date(parseInt(item.doj))).format('DD-MM-YY')}}
           </v-list-item-action>
         </v-list-item>
       </template>

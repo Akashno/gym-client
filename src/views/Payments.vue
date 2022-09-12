@@ -1,7 +1,6 @@
 <template>
-<div>
-
-<v-img
+  <div>
+    <v-img
       position="top top"
       max-height="300px"
       cover
@@ -9,79 +8,99 @@
     >
     </v-img>
 
-
-<div class="pa-4 mx-0">
+    <div class="pa-4 mx-0">
       <h2 class="">Payments</h2>
     </div>
-<div class="">
-
-    <v-data-table
-    mobile-breakpoint="0"
-      :headers="headers"
-      :loading="loading"
-      :items="payments"
-      class="ma-4"
-      loading-text="Loading... Please wait"
-    >
-<template v-slot:item.client="{ item }">
-        <Client  :client="{...item,_id:item.user._id}"/>
-      </template>
-<template v-slot:item.month="{ item }">
-    {{moment().month(item.month).subtract(1,'month').format('MMMM YYYY')}}
-      </template>
-<template v-slot:item.createdAt="{ item }">
-    {{moment(new Date(parseInt(item.createdAt))).format('DD MMMM YYYY')}}
-      </template>
-    </v-data-table>
-</div>
-</div>
+    <v-row class="mx-1">
+      <v-col cols="12" md="4">
+        <v-text-field
+          v-model="search"
+          dense
+          append-icon="mdi-magnify"
+          label="Search"
+          outlined
+          hide-details
+        ></v-text-field>
+      </v-col>
+    </v-row>
+    <div class="">
+      <v-data-table
+        mobile-breakpoint="0"
+        :headers="headers"
+        :loading="loading"
+        :items="payments"
+        class="ma-4"
+        loading-text="Loading... Please wait"
+      >
+        <template v-slot:item.client="{ item }">
+          <Client :client="{ ...item, _id: item.user._id }" />
+        </template>
+        <template v-slot:item.month="{ item }">
+          {{
+            moment().month(item.month).subtract(1, "month").format("MMMM YYYY")
+          }}
+        </template>
+        <template v-slot:item.createdAt="{ item }">
+          {{
+            moment(new Date(parseInt(item.createdAt))).format("DD MMMM YYYY")
+          }}
+        </template>
+          <template v-slot:item.amount="{ item }">
+          <v-icon small>mdi-currency-inr</v-icon>
+          {{item.amount.toFixed(2)}} 
+        </template>
+      </v-data-table>
+    </div>
+  </div>
 </template>
 
 <script>
-
 import gql from "graphql-tag";
-import moment from 'moment'
+import moment from "moment";
 
 import Client from "../components/Client.vue";
 export default {
-    components: {
-    Client
-    },
-    data(){
-        return{
-            moment:moment,
-        loading:false,
-        headers: [
+  components: {
+    Client,
+  },
+  data() {
+    return {
+      moment: moment,
+      loading: false,
+      limit:10,
+      skip:0,
+      search: "",
+      headers: [
         {
           text: "Client",
           align: "start",
           sortable: false,
           value: "client",
-          width:100
+          width: 100,
         },
-        { text: "Paid On", value: "createdAt" ,
-        
-          width:100
-        },
-        { text: "Phone", value: "phone",width:100 },
-        { text: "Month", value: "month" ,width:100},
-        { text: "Amount", value: "amount" ,width:100},
-      ]
-        }
+        {
+          text: "Paid On",
+          value: "createdAt",
 
-    },
-    apollo: {
+          width: 100,
+        },
+        { text: "Phone", value: "phone", width: 100 },
+        { text: "Month", value: "month", width: 100 },
+        { text: "Amount", value: "amount", width: 100 },
+      ],
+    };
+  },
+  apollo: {
     payments() {
       return {
         query: gql`
-          query payments {
-            payments {
-                _id
-
-             user{
+          query payments($input: PageInput!, $filter: FilterInput) {
+            payments(input: $input, filter: $filter) {
+              _id
+              user {
                 _id
               }
-              createdAt 
+              createdAt
               firstName
               lastName
               phone
@@ -92,18 +111,25 @@ export default {
             }
           }
         `,
-
-         fetchPolicy: 'cache-and-network',
+        variables() {
+          return {
+            input: {
+              limit: this.limit,
+              skip: this.skip,
+            },
+            filter: {
+              search: this.search,
+            },
+          };
+        },
+        fetchPolicy: "cache-and-network",
         result({ loading }) {
           this.loading = loading;
         },
       };
     },
-  }
-
-}
+  },
+};
 </script>
 
-<style>
-
-</style>
+<style></style>

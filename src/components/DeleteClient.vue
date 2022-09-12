@@ -62,26 +62,27 @@ export default {
         update: (store, { data: { deleteClient } }) => {
       //   // Read the data from our cache for this query.
         const CLIENTS  = gql`
-          query clients {
-            clients {
-                _id
-                firstName
-                lastName
-                phone
-                email
-                gender
-                dob
-                doj
+          query clients($input: PageInput!, $filter: FilterInput) {
+            clients(input: $input, filter: $filter) {
+              _id
+              firstName
+              lastName
+              phone
+              email
+              gender
+              dob
+              isActive
+              doj
             }
           }
         `
-      
-        const data = store.readQuery({ query: CLIENTS })
+            let variables = { input: { limit: 10, skip: 0 },filter:{search:""} };
+        const data = store.readQuery({ query: CLIENTS ,variables})
         const clients = data.clients.filter(client=>client._id !== this.clientId)
         // Add our tag from the mutation to the end
         // We don't want to modify the object returned by readQuery directly:
         // https://www.apollographql.com/docs/react/caching/cache-interaction/
-        store.writeQuery({ query: CLIENTS, data:{...data,clients:clients} })
+        store.writeQuery({ query: CLIENTS, data:{...data,clients:clients},variables })
         // Write our data back to the cache.
       },
         // Optimistic UI

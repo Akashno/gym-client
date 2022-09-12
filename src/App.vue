@@ -19,15 +19,19 @@
     </v-main>
 
     <v-snackbar
-      :color="$store.state.snackColor"
       :timeout="4000"
+      :color="$store.state.snackColor"
+      elevation="12"
       dense
       :value="$store.state.isSnack"
       height="50px"
       right
+      outlined
     >
       <v-icon v-text="$store.state.snackColor==='error' ?'mdi-alert-circle' :'mdi-check'"></v-icon>
+      <span class="font-weight-bold" >
       {{ $store.state.snackText }}
+      </span>
     </v-snackbar>
   </v-app>
 </template>

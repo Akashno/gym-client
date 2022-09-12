@@ -77,6 +77,7 @@
 <script>
 import moment from "moment";
 import gql from "graphql-tag";
+import {updatePaymentCache} from '@/methods/updateCache.js'
 export default {
   props: {
     client: Object,
@@ -161,58 +162,7 @@ export default {
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { addPayment } }) => {
-            debugger;
-            const PAYMENTS = gql`
-              query payments {
-                payments {
-                  _id
-                  user {
-                    _id
-                  }
-                  createdAt
-
-                  firstName
-                  lastName
-                  phone
-
-                  year
-                  month
-                  amount
-                }
-              }
-            `;
-            const data = store.readQuery({ query: PAYMENTS });
-            if(data.payments){
-            data.payments.push(addPayment);
-            store.writeQuery({ query: PAYMENTS, data });
-            }
-
-            const PAYMENTSBYCLIENT = gql`
-              query paymentsByClient($user: ID!, $year: Int) {
-                paymentsByClient(user: $user, year: $year) {
-                  _id
-                  user{
-                    _id
-                  }
-                  createdAt
-                  firstName
-                  lastName
-                  phone
-
-                  year
-                  month
-                  amount
-                }
-              }
-            `;
-            const data2 = store.readQuery({
-              query: PAYMENTSBYCLIENT,
-              variables: { user: this.client._id, year: this.year },
-            });
-            if(data2 && data2.paymentsByClient){
-              data2.paymentsByClient.push(addPayment);
-              store.writeQuery({ query: PAYMENTSBYCLIENT, data2 });
-            }
+            updatePaymentCache(store,addPayment)
           },
         })
         .then(() => {

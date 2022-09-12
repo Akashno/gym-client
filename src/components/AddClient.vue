@@ -1,7 +1,7 @@
 <template>
   <v-dialog
     v-model="dialog"
-    :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
+    :overlay-opacity="$vuetify.theme.dark ? '1' : '0.9'"
     :fullscreen="$vuetify.breakpoint.smAndDown"
     width="700"
   >
@@ -11,7 +11,7 @@
       </v-btn>
     </template>
 
-    <v-card class="mx-auto pa-4" max-width="700" outlined >
+    <v-card class="mx-auto pa-4" max-width="700" outlined>
       <v-card-title
         class="text-h6 font-weight-regular justify-space-between px-4"
       >
@@ -35,7 +35,7 @@
           ></v-text-field>
         </v-col>
       </v-row>
-      <v-row class=" mx-0">
+      <v-row class="mx-0">
         <v-col cols="12" md="6" class="py-0">
           <v-text-field
             type="number"
@@ -113,11 +113,15 @@
             ></v-date-picker>
           </v-menu>
         </v-col>
-
       </v-row>
       <v-row class="mx-0">
         <v-col class="py-0" cols="12" md="6">
-        <v-select dense outlined :items="['MALE','FEMALE']" v-model="client.gender"></v-select>
+          <v-select
+            dense
+            outlined
+            :items="['MALE', 'FEMALE']"
+            v-model="client.gender"
+          ></v-select>
         </v-col>
       </v-row>
       <v-card-actions>
@@ -145,27 +149,32 @@ export default {
     moment: moment,
     isDobMenu: false,
     isDojMenu: false,
-    client:{
-      firstName:"",
+    client: {
+      firstName: "",
       lastName: "",
-      dob: moment().subtract(18,'year').format("YYYY-MM-DD"),
+      dob: moment().subtract(18, "year").format("YYYY-MM-DD"),
       doj: moment().format("YYYY-MM-DD"),
-      gender:'MALE'
+      gender: "MALE",
     },
-    clientClone:{}
+    clientClone: {},
   }),
-  mounted(){
-    this.clientClone = {...this.client}
+  mounted() {
+    this.clientClone = { ...this.client };
   },
   computed: {
     isValid() {
-      return this.client.firstName && this.client.lastName && this.client.dob && this.client.doj && this.client.gender;
+      return (
+        this.client.firstName &&
+        this.client.lastName &&
+        this.client.dob &&
+        this.client.doj &&
+        this.client.gender
+      );
     },
   },
   methods: {
-    resetForm(){
-      this.client = {...this.clientClone}
-
+    resetForm() {
+      this.client = { ...this.clientClone };
     },
     createClient() {
       this.loading = true;
@@ -175,73 +184,82 @@ export default {
           mutation: gql`
             mutation createClient($input: ClientInput) {
               createClient(input: $input) {
-                  _id
-                  firstName
-                  lastName
-                  phone
-                  gender
-                  isActive
-                  email
-                  dob
-                  doj
+                _id
+                firstName
+                lastName
+                phone
+                gender
+                isActive
+                email
+                dob
+                doj
               }
             }
           `,
           // Parameters
           variables: {
             input: {
-              ...this.client
+              ...this.client,
             },
           },
           // Update the cache with the result
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { createClient } }) => {
-
-            debugger
+            debugger;
             const CLIENTS = gql`
-              query clients {
-                clients {
-                    _id
-                    firstName
-                    lastName
-                    phone
-                    email
-                    gender
-                    isActive
-                    dob
-                    doj
+              query clients($input: PageInput!, $filter: FilterInput) {
+                clients(input: $input, filter: $filter) {
+                  _id
+                  firstName
+                  lastName
+                  phone
+                  email
+                  gender
+                  dob
+                  isActive
+                  doj
                 }
               }
             `;
-            const data = store.readQuery({ query: CLIENTS });
+            let variables = { input: { limit: 10, skip: 0 },filter:{search:""} };
+            const data = store.readQuery({ query: CLIENTS,variables });
             data.clients.push(createClient);
-            store.writeQuery({ query: CLIENTS, data });
+            store.writeQuery({ query: CLIENTS, data, variables });
           },
         })
         .then(() => {
-          this.$store.commit('setSnackBar',{color:'success',text:'New Client Added'})
+          this.$store.commit("setSnackBar", {
+            color: "success",
+            text: "New Client Added",
+          });
           this.loading = false;
           this.dialog = false;
-          this.resetForm()
+          this.resetForm();
         })
         .catch((error) => {
-          this.loading =false
+          this.loading = false;
           const err = JSON.parse(JSON.stringify(error));
           if (err.message.includes("PHONE_EXISTS")) {
-          this.$store.commit('setSnackBar',{color:'error',text:'Phone already exists'})
-          }
-          else if (err.message.includes("EMAIL_EXISTS")) {
-          this.$store.commit('setSnackBar',{color:'error',text:'email already exists'})
-          }
-          else{
-          this.$store.commit('setSnackBar',{color:'error',text:'Something went wrong'})
-          this.loading = false;
-          console.log(error);
+            this.$store.commit("setSnackBar", {
+              color: "error",
+              text: "Phone already exists",
+            });
+          } else if (err.message.includes("EMAIL_EXISTS")) {
+            this.$store.commit("setSnackBar", {
+              color: "error",
+              text: "email already exists",
+            });
+          } else {
+            this.$store.commit("setSnackBar", {
+              color: "error",
+              text: "Something went wrong",
+            });
+            this.loading = false;
+            console.log(error);
           }
         });
     },
   },
 };
 </script>
-
