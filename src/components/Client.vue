@@ -28,7 +28,7 @@
         class="mx-auto d-flex justify-center lighten-3 align-center"
       >
        <v-avatar color="red" size="80">
-      <span class="white--text text-h5">{{client.firstName.slice(0,1) + ' ' + client.lastName.slice(0,1)}}</span>
+      <span class="white--text text-h5" v-if="clientById">{{clientById.firstName.slice(0,1) + ' ' + clientById.lastName.slice(0,1)}}</span>
     </v-avatar>
       </v-card>
       <v-card-text v-if="clientById" class="text-center text-h5">{{
@@ -181,7 +181,6 @@ export default {
         })
     },
   data() {
-
     return {
       year: moment().year(),
       yearList:[],
@@ -229,7 +228,11 @@ export default {
         result({ loading }) {
           this.loading = loading;
         },
-        variables:{id:this.client._id},
+        variables(){
+          return {
+               id:this.client._id
+          }
+        },
         skip(){
           return !this.client._id
 
