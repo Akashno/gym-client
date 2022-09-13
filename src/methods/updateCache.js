@@ -1,5 +1,5 @@
 import gql from "graphql-tag";
-export const updatePaymentCache = (store) => {
+export const updatePaymentCache = (store,addPayment,client) => {
   const PAYMENTS = gql`
     query payments($input: PageInput!, $filter: FilterInput) {
       payments(input: $input, filter: $filter) {
@@ -27,8 +27,13 @@ export const updatePaymentCache = (store) => {
       search: "",
     },
   };
-  const data = store.readQuery({ query: PAYMENTS, variables });
-  if (data.payments) {
+  let data 
+  try{
+   data = store.readQuery({ query: PAYMENTS, variables });
+  }catch(error){
+    console.log(error)
+  }
+  if (data && data.payments) {
     data.payments.push(addPayment);
     store.writeQuery({ query: PAYMENTS, data, variables });
   }
@@ -53,20 +58,17 @@ export const updatePaymentCache = (store) => {
     }
   `;
   const data2 = store.readQuery({
-    query: CLIENTBYID,
-    variables: { id: this.client._id },
-  });
-  if (data2 && data2.clientById) {
-    data2.clientById.payments.push({
-      year: addPayment.year,
-      month: addPayment.month,
-      amount: addPayment.amount,
-    });
-    store.writeQuery({ query: CLIENTBYID, data2, variables });
-  }
-  //dashboard data change
-  const DASHBOARD = gql`
 
+    query: CLIENTBYID,
+    variables: { id: client._id },
+  });
+  debugger
+  if (data2 && data2.clientById) {
+    data2.clientById.payments.push(addPayment);
+    store.writeQuery({ query: CLIENTBYID, data:data2,variables:{id:client._id} });
+  }
+  // dashboard data change
+  const DASHBOARD = gql`
           query dashboard {
             dashboard{
             totalClients
@@ -88,5 +90,4 @@ export const updatePaymentCache = (store) => {
             }
           }
   `
-  const data3 = store.readQuery({})
 };

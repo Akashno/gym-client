@@ -235,8 +235,8 @@ export default {
           // and then with the real result of the mutation
           update: (store, { data: { updateClient } }) => {
             const CLIENTS = gql`
-              query clients {
-                clients {
+              query clients($input:PageInput,$filter:FilterInput) {
+                clients (input:$input,filter:$filter){
                   _id
                   firstName
                   lastName
@@ -249,12 +249,13 @@ export default {
                 }
               }
             `;
-            const data = store.readQuery({ query: CLIENTS });
+            let variables={input:{limit:10,skip:0},filter:{search:""}}
+            const data = store.readQuery({ query: CLIENTS,variables });
             let index = data.clients.findIndex(
               (client) => client._id === updateClient._id
             );
             data.clients[index] = updateClient;
-            store.writeQuery({ query: CLIENTS, data });
+            store.writeQuery({ query: CLIENTS, data,variables });
           },
           // Optimistic UI
           // Will be treated as a 'fake' result as soon as the request is made

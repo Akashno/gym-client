@@ -2,7 +2,6 @@
   <v-dialog
     v-model="dialog"
     :fullscreen="$vuetify.breakpoint.smAndDown"
-
     :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
     width="500"
   >
@@ -21,13 +20,13 @@
       </v-btn>
     </template>
 
-    <v-card class="mx-auto pa-4" max-width="500" outlined rounded="xl">
+    <v-card class="mx-auto pa-4 " max-width="500" outlined  :rounded="$vuetify.breakpoint.smAndDown ? '0' :'xl' ">
       <v-card-title
         class="text-body-1 font-weight-regular justify-space-between px-4"
       >
         <span>Add fee for {{ `${client.firstName} ${client.lastName}` }} </span>
       </v-card-title>
-      <v-card-text>
+      <v-card-text class="px-0">
         <v-row class="mt-6 mx-0">
           <v-col cols="12" md="12" class="py-0">
             <v-select
@@ -41,16 +40,7 @@
             >
             </v-select>
           </v-col>
-          <v-col cols="12" md="12" class="py-0">
-            <v-select
-              v-model="year"
-              outlined
-              dense
-              label="Select year"
-              :items="yearList"
-            >
-            </v-select>
-          </v-col>
+          
         </v-row>
         <v-row class="mx-0">
           <v-col cols="12" md="12" class="py-0">
@@ -86,7 +76,6 @@ export default {
     loading: false,
     dialog: false,
     moment: moment,
-    yearList: [],
     monthList: [
       { text: "January", value: 1 },
       { text: "February", value: 2 },
@@ -103,16 +92,8 @@ export default {
     ],
 
     month: moment().month() + 1,
-    year: moment().year(),
     amount: 500,
   }),
-  mounted() {
-    let currentYear = moment().year();
-    let temp = [0, 1, 2, 3, 4];
-    temp.map((index) => {
-      this.yearList.push(currentYear - index);
-    });
-  },
   computed: {
     isValid() {
       return (
@@ -153,8 +134,7 @@ export default {
           variables: {
             input: {
               user: this.client._id,
-              amount: this.amount,
-              year: this.year,
+              amount: parseFloat(this.amount) ,
               month: this.month,
             },
           },
@@ -162,7 +142,8 @@ export default {
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { addPayment } }) => {
-            updatePaymentCache(store,addPayment)
+            debugger
+            updatePaymentCache(store,addPayment,this.client)
           },
         })
         .then(() => {

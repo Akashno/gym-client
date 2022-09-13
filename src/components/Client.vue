@@ -150,7 +150,7 @@
               title="Fee Paid"
             >
             <v-card color="green" class="px-2 py-3 me-2">{{payment.amount}}</v-card>
-              {{moment().month(payment.month).format('MMMM')}}
+              {{moment().month(payment.month - 1).format('MMMM')}}
             </v-chip>
           </v-row>
           </v-card>
