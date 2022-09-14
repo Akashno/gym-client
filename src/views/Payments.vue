@@ -35,6 +35,9 @@
         <template v-slot:item.client="{ item }">
           <Client :client="{ ...item, _id: item.user._id }" />
         </template>
+        <template v-slot:item.phone="{ item }">
+  {{item.phone || '-'}}
+        </template>
         <template v-slot:item.month="{ item }">
           {{
             moment().month(item.month).subtract(1, "month").format("MMMM YYYY")

@@ -3,19 +3,26 @@
     <NavigationDrawer :drawer="drawer" />
     <v-app-bar app absolute elevation="0" color="">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+
       <v-spacer></v-spacer>
-      <v-btn @click="setDarkMode()" icon>
-      <v-icon v-if="$vuetify.theme.dark"> mdi-white-balance-sunny </v-icon>
-      <v-icon v-else> mdi-moon-waning-crescent </v-icon>
+      <v-btn text small @click="showTime = !showTime" outlined>
+        <span v-if="showTime" class="d-flex align-center ">
+          <v-icon class="me-1" x-small>mdi-clock</v-icon>{{ time }}
+        </span>
+        <span v-else class="d-flex align-center"> <v-icon x-small class="me-1">mdi-calendar</v-icon>{{ date }} </span>
       </v-btn>
-      
+
+      <v-btn @click="setDarkMode()" icon >
+        <v-icon v-if="$vuetify.theme.dark"> mdi-white-balance-sunny </v-icon>
+        <v-icon v-else> mdi-moon-waning-crescent </v-icon>
+      </v-btn>
+
       <v-btn @click="logout" icon class="">
         <v-icon>mdi-location-exit</v-icon>
       </v-btn>
-      
     </v-app-bar>
     <v-main>
-      <router-view style="" class=""  />
+      <router-view style="" class="" />
     </v-main>
 
     <v-snackbar
@@ -28,9 +35,13 @@
       right
       outlined
     >
-      <v-icon v-text="$store.state.snackColor==='error' ?'mdi-alert-circle' :'mdi-check'"></v-icon>
-      <span class="font-weight-bold" >
-      {{ $store.state.snackText }}
+      <v-icon
+        v-text="
+          $store.state.snackColor === 'error' ? 'mdi-alert-circle' : 'mdi-check'
+        "
+      ></v-icon>
+      <span class="font-weight-bold">
+        {{ $store.state.snackText }}
       </span>
     </v-snackbar>
   </v-app>
@@ -46,6 +57,8 @@ export default {
     return {
       drawer: true,
       time: null,
+      date: null,
+      showTime: true,
     };
   },
   watch: {
@@ -59,19 +72,19 @@ export default {
   },
   mounted() {
     this.setTime();
+    this.date = moment().format("DD-MMMM-YYYY");
     setInterval(() => {
       this.setTime();
     }, 1000);
   },
-  created(){
-    const darkMode = JSON.parse(localStorage.getItem('darkMode'))
-    this.$vuetify.theme.dark = darkMode
-
+  created() {
+    const darkMode = JSON.parse(localStorage.getItem("darkMode"));
+    this.$vuetify.theme.dark = darkMode;
   },
   methods: {
-    setDarkMode(){
-      this.$vuetify.theme.dark=!this.$vuetify.theme.dark
-      localStorage.setItem('darkMode',this.$vuetify.theme.dark)
+    setDarkMode() {
+      this.$vuetify.theme.dark = !this.$vuetify.theme.dark;
+      localStorage.setItem("darkMode", this.$vuetify.theme.dark);
     },
     setTime() {
       this.time = moment().format("hh:mm:ss a");

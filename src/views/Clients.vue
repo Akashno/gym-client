@@ -35,6 +35,9 @@
       <template v-slot:item.client="{ item }">
         <Client :client="item" />
       </template>
+<template v-slot:item.phone="{ item }">
+  {{item.phone || '-'}}
+      </template>
       <template v-slot:item.isActive="{ item }">
         <v-chip
           :disabled="!item.isActive"
