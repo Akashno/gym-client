@@ -1,7 +1,7 @@
 <template>
 <v-container fluid >
   <v-card width="100%" class="py-4 rounded-xl " outlined height="340px" >
-    <span class="text-caption  ml-6  text--darken-2 ">Current month pee pending</span>
+    <span class="text-caption  ml-6  text--darken-2 ">Current month fee pending</span>
     <p class="text-caption text-center mt-10" v-if="!feePaymentsToday.length" >No fee payments today</p>
   <v-virtual-scroll
       class="mt-4"
