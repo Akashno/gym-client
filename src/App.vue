@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
-    <NavigationDrawer :drawer="drawer" />
-    <v-app-bar app absolute elevation="0" color="">
+    <NavigationDrawer :drawer="drawer"  v-if="$store.state.token"/>
+    <v-app-bar app absolute elevation="0" color="" v-if="$store.state.token">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>
@@ -49,6 +49,7 @@
 <script>
 import NavigationDrawer from "./components/NavigationDrawer.vue";
 import moment from "moment";
+import { onLogout } from './vue-apollo';
 export default {
   components: {
     NavigationDrawer,
@@ -80,6 +81,8 @@ export default {
   created() {
     const darkMode = JSON.parse(localStorage.getItem("darkMode"));
     this.$vuetify.theme.dark = darkMode;
+    let token = localStorage.getItem("GYM_USER")
+    this.$store.commit('setUser',token)
   },
   methods: {
     setDarkMode() {
@@ -90,6 +93,7 @@ export default {
       this.time = moment().format("hh:mm:ss a");
     },
     logout() {
+      onLogout(this.$apollo.provider.defaultClient);
       this.$store.commit("setUser", null);
       this.$router.push({ name: "Login" });
     },

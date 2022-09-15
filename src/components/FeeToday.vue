@@ -2,7 +2,7 @@
 <v-container fluid >
   <v-card width="100%" class="py-4 rounded-xl " outlined height="340px" >
     <span class="text-caption  ml-6  text--darken-2 ">Current month fee pending</span>
-    <p class="text-caption text-center mt-10" v-if="!feePaymentsToday.length" >No fee payments today</p>
+    <p class="text-caption text-center mt-10" v-if="!feePaymentsToday.length" >No Pending fee payments this month</p>
   <v-virtual-scroll
       class="mt-4"
       :items="feePaymentsToday"
@@ -49,7 +49,7 @@ import moment from 'moment'
 
   },
   methods:{
-    checkDue(item){
+    checkDue(item){ // if payment is due then show right red border 
       let dayOfJoin = moment(new Date(parseInt(item.doj))).date()
       let today = moment().date()
       console.log(dayOfJoin,today)

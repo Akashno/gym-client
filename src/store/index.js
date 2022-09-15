@@ -5,7 +5,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    user:null,
+    token:null,
     isSnack:false,
     snackColor:'',
     snackText:'',
@@ -24,7 +24,7 @@ export default new Vuex.Store({
       state.snackText=''
     },
     setUser(state,payload){
-      state.user = payload
+      state.token = payload
     }
   },
   actions: {

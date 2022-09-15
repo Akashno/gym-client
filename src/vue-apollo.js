@@ -6,7 +6,7 @@ import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/gra
 import { setContext } from 'apollo-link-context'
 
 Vue.use(VueApollo)
-const AUTH_TOKEN = 'apollo-token'
+const AUTH_TOKEN = 'GYM_USER'
 
 // Http endpoint
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:5000/graphql'
