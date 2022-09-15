@@ -30,7 +30,10 @@
         <v-text-field
           v-model="password"
           dense
+          :type="showPassword ? 'text' :'password'"
           placeholder="Password"
+          append-icon="mdi-eye"
+          @click:append="showPassword = !showPassword"
           outlined
           color="secondary"
         ></v-text-field>
@@ -57,7 +60,8 @@ export default {
     return {
       phone: null,
       password: null,
-      error:""
+      error:"",
+      showPassword:false,
     };
   },
   computed: {

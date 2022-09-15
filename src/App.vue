@@ -83,6 +83,7 @@ export default {
     this.$vuetify.theme.dark = darkMode;
     let token = localStorage.getItem("GYM_USER")
     this.$store.commit('setUser',token)
+    if(!token) this.logout() 
   },
   methods: {
     setDarkMode() {
