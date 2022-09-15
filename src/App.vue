@@ -1,7 +1,7 @@
 <template>
   <v-app id="inspire">
     <NavigationDrawer :drawer="drawer"  v-if="$store.state.token"/>
-    <v-app-bar app absolute elevation="0" color="" v-if="$store.state.token">
+    <v-app-bar app  elevation="0" color="" v-if="$store.state.token">
       <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-spacer></v-spacer>

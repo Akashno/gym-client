@@ -22,6 +22,7 @@
       <v-row class="mt-10">
         <v-text-field
           v-model="phone"
+          type="number"
           dense
           placeholder="Phone"
           outlined
@@ -29,6 +30,7 @@
         ></v-text-field>
         <v-text-field
           v-model="password"
+          @keydown.enter="login"
           dense
           :type="showPassword ? 'text' :'password'"
           placeholder="Password"
@@ -41,6 +43,7 @@
       <v-row justify="center" class="mb-10">
         <v-btn
           width="100%"
+          :loading="loading"
           color="secondary"
           @click="login"
           :disabled="!isValid"
@@ -62,6 +65,7 @@ export default {
       password: null,
       error:"",
       showPassword:false,
+      loading :false
     };
   },
   computed: {
@@ -71,6 +75,9 @@ export default {
   },
   methods: {
     login() {
+      this.loading = true
+      this.error = ""
+      if(!this.phone || !this.password ) return
       this.$apollo
         .mutate({
           // Query
@@ -88,12 +95,14 @@ export default {
           },
         })
         .then((data) => {
+          this.loading = false
           debugger;
           onLogin(apolloClient, data.data.signIn);
           this.$store.commit("setUser", data.data.signIn);
           this.$router.push({ name: "Dashboard" });
           // location.reload();
         }).catch(error=>{
+          this.loading = false
           this.error = error.graphQLErrors[0].message
         });
     },

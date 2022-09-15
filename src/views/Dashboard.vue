@@ -1,5 +1,5 @@
 <template>
-  <div class="pa-0 pa-md-4">
+<v-container   class="pa-0 pa-md-4 ">
     <v-row dense no-gutters class="" v-if="dashboard" >
       <v-col cols="12" md="4">
         <TotalGraph :totalClients="dashboard.totalClients" />
@@ -14,7 +14,7 @@
         <LatestJoins class="" :latestJoins="dashboard.latestJoins" />
       </v-col>
     </v-row>
-  </div>
+</v-container>
 </template>
 
 <script>
