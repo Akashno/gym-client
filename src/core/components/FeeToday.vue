@@ -24,7 +24,11 @@
           </v-list-item-avatar>
 
           <v-list-item-content>
-            <v-list-item-title><Client :client="item"/></v-list-item-title>
+            <v-list-item-title>
+              <router-link :to="{ name: 'Client', params: { id: item._id } }" class="text-decoration-none " style="color:inherit"> 
+          <v-icon small>mdi-eye</v-icon> {{ item.firstName
+        }} {{item.lastName}}</router-link>
+              </v-list-item-title>
           </v-list-item-content>
     
           <v-list-item-action class="text-caption">
@@ -41,13 +45,8 @@
 
 <script>
 
-import Client from "../components/Client.vue";
 import moment from 'moment'
   export default {
-  components:{
-    Client
-
-  },
   methods:{
     checkDue(item){ // if payment is due then show right red border 
       let dayOfJoin = moment(new Date(parseInt(item.doj))).date()

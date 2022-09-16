@@ -1,10 +1,11 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Dashboard from '../views/Dashboard.vue'
-import Clients from '../views/Clients.vue'
-import Payments from '../views/Payments.vue'
-import Login from '../views/Login.vue'
-import Profile from '../views/Profile.vue'
+import Dashboard from '../core/pages/Dashboard.vue'
+import Client from '../client/pages/Client.vue'
+import Clients from '../client/pages/Clients.vue'
+import Payments from '../payment/pages/Payments.vue'
+import Login from '../core/pages/Login.vue'
+import Profile from '../core/pages/Profile.vue'
 
 Vue.use(VueRouter)
 
@@ -18,6 +19,14 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/client/:id?",
+    name: "Client",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: Client,
   },
   {
     path: "/clients",
@@ -48,7 +57,11 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+   scrollBehavior(to, from, savedPosition) {
+    return { x: 0, y: 0 }
+  }
+
 })
 
 export default router

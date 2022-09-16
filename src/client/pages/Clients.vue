@@ -33,10 +33,13 @@
       loading-text="Loading... Please wait"
     >
       <template v-slot:item.client="{ item }">
-        <Client :client="item" />
+        <router-link :to="{ name: 'Client', params: { id: item._id } }" class="text-decoration-none " style="color:inherit"> 
+          
+          <v-icon class="cursor-pointer" small>mdi-eye</v-icon> {{ item.firstName
+        }}</router-link>
       </template>
-<template v-slot:item.phone="{ item }">
-  {{item.phone || '-'}}
+      <template v-slot:item.phone="{ item }">
+        {{ item.phone || "-" }}
       </template>
       <template v-slot:item.isActive="{ item }">
         <v-chip
@@ -56,33 +59,27 @@
         {{ moment(new Date(parseInt(item.dob))).format(" MMMM DD YYYY") }}
       </template>
       <template v-slot:item.action="{ item }">
-        <v-row class="mx-0 " >
+        <v-row class="mx-0">
           <EditClient :client="item" class="me-2" style="cursor: pointer" />
-          <AddPayment :client="item" class=""/>
-      <v-btn
-        icon
-        outlined
-        class="ms-2"
-        small
-        title="whatsapp text"
-      >
-          <a target="_blank"
-            :href="`https://api.whatsapp.com/send?phone=91${item.phone}`"
-            class="text-decoration-none"
-            style="color: inherit"
-          >
-           <v-icon small>mdi-whatsapp</v-icon>
-          </a>
-      </v-btn>
-     </v-row>
+          <AddPayment :client="item" class="" />
+          <v-btn icon outlined class="ms-2" small title="whatsapp text">
+            <a
+              target="_blank"
+              :href="`https://api.whatsapp.com/send?phone=91${item.phone}`"
+              class="text-decoration-none"
+              style="color: inherit"
+            >
+              <v-icon small>mdi-whatsapp</v-icon>
+            </a>
+          </v-btn>
+        </v-row>
       </template>
     </v-data-table>
   </div>
 </template>
 <script>
 import AddClient from "../components/AddClient.vue";
-import AddPayment from "../components/AddPayment.vue";
-import Client from "../components/Client.vue";
+import AddPayment from "../../payment/components/AddPayment.vue";
 import EditClient from "../components/EditClient.vue";
 import moment from "moment";
 import gql from "graphql-tag";
@@ -92,7 +89,6 @@ export default {
     AddClient,
     AddPayment,
     EditClient,
-    Client,
   },
   methods: {
     calculateAge(dob) {
@@ -125,7 +121,7 @@ export default {
         { text: "Phone", value: "phone" },
         { text: "Date of join", value: "doj", width: 300 },
         { text: "Active", value: "isActive" },
-        { text: "Action", value: "action" ,width:150},
+        { text: "Action", value: "action", width: 150 },
       ],
     };
   },

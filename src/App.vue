@@ -54,7 +54,7 @@
   </v-app>
 </template>
 <script>
-import NavigationDrawer from "./components/NavigationDrawer.vue";
+import NavigationDrawer from "./core/components/NavigationDrawer.vue";
 import moment from "moment";
 import { onLogout } from "./vue-apollo";
 export default {

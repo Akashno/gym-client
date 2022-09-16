@@ -19,8 +19,9 @@
           {{ index + 1 }}
         </template>
         <template v-slot:item.client="{ item }">
-          
-        <Client  :client="item"/>
+ <router-link :to="{ name: 'Client', params: { id: item._id } }" class="text-decoration-none " style="color:inherit"> 
+          <v-icon small>mdi-eye</v-icon> {{ item.firstName
+        }} {{item.lastName}}</router-link>         
 
         </template>
         <template v-slot:item.doj="{ item }">
@@ -34,13 +35,9 @@
 <script>
 import moment from "moment";
 
-import Client from "../components/Client.vue";
 export default {
   props: { latestJoins: Array },
-  components:{
-    Client
 
-  },
   data: () => ({
     moment: moment,
     headers: [

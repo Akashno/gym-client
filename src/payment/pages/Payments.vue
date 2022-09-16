@@ -33,10 +33,17 @@
         loading-text="Loading... Please wait"
       >
         <template v-slot:item.client="{ item }">
-          <Client :client="{ ...item, _id: item.user._id }" />
+          <router-link
+            :to="{ name: 'Client', params: { id: item.user._id } }"
+            class="text-decoration-none"
+            style="color: inherit"
+          >
+            <v-icon small>mdi-eye</v-icon> {{ item.firstName }}
+            {{ item.lastName }}</router-link
+          >
         </template>
         <template v-slot:item.phone="{ item }">
-  {{item.phone || '-'}}
+          {{ item.phone || "-" }}
         </template>
         <template v-slot:item.month="{ item }">
           {{
@@ -48,9 +55,9 @@
             moment(new Date(parseInt(item.createdAt))).format("DD MMMM YYYY")
           }}
         </template>
-          <template v-slot:item.amount="{ item }">
+        <template v-slot:item.amount="{ item }">
           <v-icon small>mdi-currency-inr</v-icon>
-          {{item.amount.toFixed(2)}} 
+          {{ item.amount.toFixed(2) }}
         </template>
       </v-data-table>
     </div>
@@ -61,17 +68,13 @@
 import gql from "graphql-tag";
 import moment from "moment";
 
-import Client from "../components/Client.vue";
 export default {
-  components: {
-    Client,
-  },
   data() {
     return {
       moment: moment,
       loading: false,
-      limit:10,
-      skip:0,
+      limit: 10,
+      skip: 0,
       search: "",
       headers: [
         {

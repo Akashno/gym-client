@@ -48,7 +48,7 @@
       </v-row>
       <v-row>
         <v-col cols="12" md="3">
-          <v-btn :loading="profileBtnLoading" width="100%" @click="updateUser"
+          <v-btn :loading="profileBtnLoading" width="100%" @click="updateUser" color="primary"
             >Update Profile</v-btn
           >
         </v-col>
@@ -102,6 +102,7 @@
       <v-row>
         <v-col cols="12" md="3">
           <v-btn
+          color="primary"
             width="100%"
             @click="changePassword"
             :disabled="isNotValidForm()"

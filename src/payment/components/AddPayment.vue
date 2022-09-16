@@ -24,7 +24,7 @@
       <v-card-title
         class="text-body-1 font-weight-regular justify-space-between px-4"
       >
-        <span>Add fee for {{ `${client.firstName} ${client.lastName}` }} </span>
+        <span v-if="client">Add fee for {{ `${client.firstName} ${client.lastName}` }} </span>
       </v-card-title>
       <v-card-text class="px-0">
         <v-row class="mt-6 mx-0">

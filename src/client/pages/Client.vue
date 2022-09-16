@@ -1,24 +1,5 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
-    class="rounded-xl"
-    width="800px"
-    :fullscreen="$vuetify.breakpoint.smAndDown"
-  >
-    <template v-slot:activator="{ on, attrs }">
-      <span v-bind="attrs" v-on="on" class="d-flex align-center">
-        <v-icon small class="me-2">mdi-eye</v-icon>
-        
-        {{ `${client.firstName} ${client.lastName}` }}
-      </span>
-    </template>
-    <v-card class="pb-14 pt-8" rounded="xl" outlined>
-      <v-row class="mx-10" justify="end">
-        <v-btn icon @click="dialog = false" outlined class="mb-8 mt-8 mt-md-0">
-          <v-icon> mdi-close </v-icon>
-        </v-btn>
-      </v-row>
+  <v-card class="pb-14 pt-16 px-0" rounded="xl" outlined height="100vh" tile flat>
       <v-card
         height="100px"
         width="100px"
@@ -157,23 +138,20 @@
         </v-col>
       </v-row>
     </v-card>
-  </v-dialog>
 </template>
 
 <script>
 import moment from "moment";
 
-import AddPayment from "../components/AddPayment.vue";
+import AddPayment from "../../payment/components/AddPayment.vue";
 
 import gql from "graphql-tag";
 export default {
-  props: {
-    client: Object,
-  },
   components: {
     AddPayment,
   },
     mounted(){
+        this.clientId = this.$route.params.id 
         let currentYear = moment().year()
         let temp = [0,1,2,3,4]
         temp.map(item=>{
@@ -182,6 +160,7 @@ export default {
     },
   data() {
     return {
+        clientId:null,
       year: moment().year(),
       yearList:[],
       monthList:[],
@@ -230,11 +209,11 @@ export default {
         },
         variables(){
           return {
-               id:this.client._id
+               id:this.clientId
           }
         },
         skip(){
-          return !this.client._id
+          return !this.clientId
 
         }
       };
@@ -243,3 +222,7 @@ export default {
 
 };
 </script>
+
+<style>
+
+</style>
