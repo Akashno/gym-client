@@ -222,8 +222,11 @@ export default {
                 }
               }
             `;
-            let variables = { input: { limit: 10, skip: 0 },filter:{search:""} };
-            const data = store.readQuery({ query: CLIENTS,variables });
+            let variables = {
+              input: { limit: 10, skip: 0 },
+              filter: { search: "" },
+            };
+            const data = store.readQuery({ query: CLIENTS, variables });
             data.clients.push(createClient);
             store.writeQuery({ query: CLIENTS, data, variables });
           },
@@ -239,25 +242,16 @@ export default {
         })
         .catch((error) => {
           this.loading = false;
-          const err = JSON.parse(JSON.stringify(error));
-          if (err.message.includes("PHONE_EXISTS")) {
+
+          this.errorMessage = error.graphQLErrors[0].message;
+          if (this.errorMessage) {
             this.$store.commit("setSnackBar", {
               color: "error",
-              text: "Phone already exists",
+              text: this.errorMessage,
             });
-          } else if (err.message.includes("EMAIL_EXISTS")) {
-            this.$store.commit("setSnackBar", {
-              color: "error",
-              text: "email already exists",
-            });
-          } else {
-            this.$store.commit("setSnackBar", {
-              color: "error",
-              text: "Something went wrong",
-            });
-            this.loading = false;
-            console.log(error);
           }
+
+          this.loading = false;
         });
     },
   },
