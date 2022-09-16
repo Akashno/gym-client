@@ -51,7 +51,6 @@ import moment from 'moment'
     checkDue(item){ // if payment is due then show right red border 
       let dayOfJoin = moment(new Date(parseInt(item.doj))).date()
       let today = moment().date()
-      console.log(dayOfJoin,today)
       if(dayOfJoin <= today){
         return 'border-left:4px solid red'
       }
