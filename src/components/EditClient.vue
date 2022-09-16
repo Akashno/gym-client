@@ -202,7 +202,7 @@ export default {
         .mutate({
           // Query
           mutation: gql`
-            mutation updateClient($input: ClientInput) {
+            mutation updateClient($input: UserInput) {
               updateClient(input: $input) {
                 _id
                 firstName

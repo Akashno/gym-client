@@ -182,7 +182,7 @@ export default {
         .mutate({
           // Query
           mutation: gql`
-            mutation createClient($input: ClientInput) {
+            mutation createClient($input: UserInput) {
               createClient(input: $input) {
                 _id
                 firstName

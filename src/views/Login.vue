@@ -83,7 +83,16 @@ export default {
           // Query
           mutation: gql`
             mutation signIn($input: SignInInput) {
-              signIn(input: $input)
+              signIn(input: $input){
+                token
+                user{
+                  _id
+                  firstName
+                  lastName
+                  phone
+                  email
+                }
+              }
             }
           `,
           // Parameters
@@ -96,9 +105,9 @@ export default {
         })
         .then((data) => {
           this.loading = false
-          debugger;
-          onLogin(apolloClient, data.data.signIn);
-          this.$store.commit("setUser", data.data.signIn);
+          const {token,user} = data.data.signIn
+          onLogin(apolloClient, {token,user});
+          this.$store.commit("setUser",user);
           this.$router.push({ name: "Dashboard" });
           // location.reload();
         }).catch(error=>{

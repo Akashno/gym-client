@@ -6,7 +6,7 @@ import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/gra
 import { setContext } from 'apollo-link-context'
 
 Vue.use(VueApollo)
-const AUTH_TOKEN = 'GYM_USER'
+const AUTH_TOKEN = 'GYM_USER_TOKEN'
 
 // Http endpoint
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:5000/graphql'
@@ -63,9 +63,10 @@ export function createProvider(options = {}) {
 }
 
 // Manually call this when user log in
-export async function onLogin(apolloClient, token) {
+export async function onLogin(apolloClient, {token,user}) {
   if (typeof localStorage !== 'undefined' && token) {
     localStorage.setItem(AUTH_TOKEN, token)
+    localStorage.setItem('GYM_USER', JSON.stringify(user))
   }
   if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
   try {
