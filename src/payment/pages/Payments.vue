@@ -35,12 +35,10 @@
         <template v-slot:item.client="{ item }">
           <router-link
             :to="{ name: 'Client', params: { id: item.user._id } }"
-            class="text-decoration-none"
             style="color: inherit"
           >
-            <v-icon small>mdi-eye</v-icon> {{ item.firstName }}
-            {{ item.lastName }}</router-link
-          >
+            {{ item.firstName }} {{ item.lastName }}
+            </router-link >
         </template>
         <template v-slot:item.phone="{ item }">
           {{ item.phone || "-" }}
@@ -58,6 +56,9 @@
         <template v-slot:item.amount="{ item }">
           <v-icon small>mdi-currency-inr</v-icon>
           {{ item.amount.toFixed(2) }}
+        </template>
+        <template v-slot:item.download="{ item }">
+          <v-icon>mdi-download-outline</v-icon>
         </template>
       </v-data-table>
     </div>
@@ -93,8 +94,14 @@ export default {
         { text: "Phone", value: "phone", width: 100 },
         { text: "Month", value: "month", width: 100 },
         { text: "Amount", value: "amount", width: 100 },
+        { text: "Download", value: "download", width: 100 ,align:"center"},
       ],
     };
+  },
+  methods:{
+    showClient(item) {
+      this.$router.push({ name: "Client", params: { id: item.user._id } });
+    },
   },
   apollo: {
     payments() {

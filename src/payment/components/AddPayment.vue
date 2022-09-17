@@ -67,7 +67,7 @@
 <script>
 import moment from "moment";
 import gql from "graphql-tag";
-import {updatePaymentCache} from '@/methods/updateCache.js'
+import {updatePaymentCache} from '@/client/methods/updateCache.js'
 export default {
   props: {
     client: Object,

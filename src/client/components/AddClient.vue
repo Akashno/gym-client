@@ -242,8 +242,7 @@ export default {
         })
         .catch((error) => {
           this.loading = false;
-
-          this.errorMessage = error.graphQLErrors[0].message;
+          this.errorMessage = error.graphQLErrors[0]?.message;
           if (this.errorMessage) {
             this.$store.commit("setSnackBar", {
               color: "error",

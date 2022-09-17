@@ -33,10 +33,13 @@
       loading-text="Loading... Please wait"
     >
       <template v-slot:item.client="{ item }">
-        <router-link :to="{ name: 'Client', params: { id: item._id } }" class="text-decoration-none " style="color:inherit"> 
-          
-          <v-icon class="cursor-pointer" small>mdi-eye</v-icon> {{ item.firstName
-        }}</router-link>
+        <router-link
+        
+          :to="{ name: 'Client', params: { id: item._id } }"
+          style="color: inherit;"
+        >
+          {{ item.firstName }} {{item.lastName}}</router-link
+        >
       </template>
       <template v-slot:item.phone="{ item }">
         {{ item.phone || "-" }}
@@ -59,7 +62,7 @@
         {{ moment(new Date(parseInt(item.dob))).format(" MMMM DD YYYY") }}
       </template>
       <template v-slot:item.action="{ item }">
-        <v-row class="mx-0">
+        <v-row class="mx-0" >
           <EditClient :client="item" class="me-2" style="cursor: pointer" />
           <AddPayment :client="item" class="" />
           <v-btn icon outlined class="ms-2" small title="whatsapp text">
@@ -94,8 +97,8 @@ export default {
     calculateAge(dob) {
       return Math.abs(moment(new Date(parseInt(dob))).diff(moment(), "years"));
     },
-    showClient(id) {
-      this.$router.push({ name: "Client", params: { id: id } });
+    showClient(item) {
+      this.$router.push({ name: "Client", params: { id: item._id } });
     },
   },
   data() {

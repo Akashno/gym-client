@@ -88,7 +88,6 @@ export default {
   created() {
     const darkMode = JSON.parse(localStorage.getItem("darkMode"));
     this.$vuetify.theme.dark = darkMode;
-    debugger
     let user = JSON.parse(localStorage.getItem("GYM_USER"));
     this.$store.commit("setUser", user);
     if (!user) this.logout();

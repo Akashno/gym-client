@@ -1,21 +1,26 @@
 <template>
   <div>
-    <v-btn outlined icon small @click="isDrawer = true" title="Edit client details">
+    <v-btn
+      outlined
+      icon
+      small
+      @click="isDrawer = true"
+      title="Edit client details"
+    >
       <v-icon small>mdi-pencil</v-icon>
     </v-btn>
     <v-navigation-drawer
       :width="$vuetify.breakpoint.smAndDown ? '100%' : '800px'"
-    :overlay-opacity="$vuetify.theme.dark ? '1':'0.9'"
+      :overlay-opacity="$vuetify.theme.dark ? '1' : '0.9'"
       temporary
       app
       right
       v-model="isDrawer"
       class="pa-md-10 pa-4"
     >
-
       <v-row class="mt-2">
         <v-col cols="12" class="d-flex justify-space-between align-center">
-          <span class="text-h6 ">Edit Client</span>
+          <span class="text-h6">Edit Client</span>
           <v-btn icon @click="isDrawer = false" outlined>
             <v-icon> mdi-close </v-icon>
           </v-btn>
@@ -168,7 +173,7 @@ export default {
     },
   },
   mounted() {
-    this.clientInfo = { ...this.client }; // need to find a better method to deep copy
+    this.clientInfo = { ...this.client };
     if (this.clientInfo.dob) {
       this.dob = moment(new Date(parseInt(this.clientInfo.dob))).format(
         "YYYY-MM-DD"
@@ -235,8 +240,8 @@ export default {
           // and then with the real result of the mutation
           update: (store, { data: { updateClient } }) => {
             const CLIENTS = gql`
-              query clients($input:PageInput,$filter:FilterInput) {
-                clients (input:$input,filter:$filter){
+              query clients($input: PageInput, $filter: FilterInput) {
+                clients(input: $input, filter: $filter) {
                   _id
                   firstName
                   lastName
@@ -249,13 +254,16 @@ export default {
                 }
               }
             `;
-            let variables={input:{limit:10,skip:0},filter:{search:""}}
-            const data = store.readQuery({ query: CLIENTS,variables });
+            let variables = {
+              input: { limit: 10, skip: 0 },
+              filter: { search: "" },
+            };
+            const data = store.readQuery({ query: CLIENTS, variables });
             let index = data.clients.findIndex(
               (client) => client._id === updateClient._id
             );
             data.clients[index] = updateClient;
-            store.writeQuery({ query: CLIENTS, data,variables });
+            store.writeQuery({ query: CLIENTS, data, variables });
           },
           // Optimistic UI
           // Will be treated as a 'fake' result as soon as the request is made
@@ -269,10 +277,11 @@ export default {
           this.loading = false;
           this.isDrawer = false;
         })
-        .catch(() => {
+        .catch((error) => {
+          let errorMessage = error.graphQLErrors[0].message
           this.$store.commit("setSnackBar", {
             color: "error",
-            text: "Something Went wrong",
+            text:errorMessage 
           });
           this.loading = false;
         });

@@ -57,8 +57,9 @@ export const updatePaymentCache = (store,addPayment,client) => {
       }
     }
   `;
-  const data2 = store.readQuery({
+  try{
 
+  const data2 = store.readQuery({
     query: CLIENTBYID,
     variables: { id: client._id },
   });
@@ -67,27 +68,8 @@ export const updatePaymentCache = (store,addPayment,client) => {
     data2.clientById.payments.push(addPayment);
     store.writeQuery({ query: CLIENTBYID, data:data2,variables:{id:client._id} });
   }
+  }catch(error){
+    console.log(error)
+  }
   // dashboard data change
-  const DASHBOARD = gql`
-          query dashboard {
-            dashboard{
-            totalClients
-            totalClientsThisMonth
-            feePaymentsToday {
-                _id
-                firstName
-                lastName
-                dob
-                doj
-            }
-            latestJoins {
-                _id
-                firstName
-                lastName
-                dob
-                doj
-            }
-            }
-          }
-  `
 };
