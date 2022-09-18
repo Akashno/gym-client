@@ -227,7 +227,7 @@ export default {
               filter: { search: "" },
             };
             const data = store.readQuery({ query: CLIENTS, variables });
-            data.clients.push(createClient);
+            data.clients.unshift(createClient);
             store.writeQuery({ query: CLIENTS, data, variables });
           },
         })
