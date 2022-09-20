@@ -185,6 +185,7 @@ export default {
             mutation createClient($input: UserInput) {
               createClient(input: $input) {
                 _id
+                userCode
                 firstName
                 lastName
                 phone
@@ -211,6 +212,7 @@ export default {
               query clients($input: PageInput!, $filter: FilterInput) {
                 clients(input: $input, filter: $filter) {
                   _id
+                  userCode
                   firstName
                   lastName
                   phone

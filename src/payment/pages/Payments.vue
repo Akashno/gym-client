@@ -58,7 +58,9 @@
           {{ item.amount.toFixed(2) }}
         </template>
         <template v-slot:item.download="{ item }">
+          <v-btn @click="downloadReceipt(item)" icon>
           <v-icon>mdi-download-outline</v-icon>
+          </v-btn>
         </template>
       </v-data-table>
     </div>
@@ -68,6 +70,7 @@
 <script>
 import gql from "graphql-tag";
 import moment from "moment";
+import { feeReceipt} from '@/payment/methods/feeReceipt'
 
 export default {
   data() {
@@ -99,6 +102,9 @@ export default {
     };
   },
   methods:{
+    downloadReceipt(payment){
+       feeReceipt(payment)
+    },
     showClient(item) {
       this.$router.push({ name: "Client", params: { id: item.user._id } });
     },

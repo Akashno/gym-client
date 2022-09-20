@@ -24,11 +24,13 @@
       </v-col>
     </v-row>
     <v-data-table
+    v-if="clients"
       mobile-breakpoint="0"
-      :options="options"
+      :options.sync="options"
       :headers="headers"
       :loading="loading"
-      :items="clients"
+      :server-items-length="clients.totalClients"
+      :items="clients.clients"
       class="ma-4"
       loading-text="Loading... Please wait"
     >
@@ -114,6 +116,8 @@ export default {
       limit: 10,
       skip: 0,
       headers: [
+
+        { text: "User Code", value: "userCode", width: 110 },
         {
           text: "Client",
           align: "start",
@@ -129,11 +133,18 @@ export default {
     };
   },
   watch: {
+    search:{
+      handler(){
+        this.$apollo.queries.clients.refetch({filter:{search:this.search}})
+      }
+    },
     options: {
       handler() {
         this.limit = this.options.itemsPerPage;
-        this.skip = this.options.itemsPerPage * this.options.page;
+        this.skip =this.options.itemsPerPage * this.options.page - this.options.itemsPerPage;
+        this.$apollo.queries.clients.refetch({input:{limit:this.limit,skip:this.skip}})
       },
+      immediate:false
     },
   },
   apollo: {
@@ -142,7 +153,10 @@ export default {
         query: gql`
           query clients($input: PageInput!, $filter: FilterInput) {
             clients(input: $input, filter: $filter) {
+              clients{
+
               _id
+              userCode
               firstName
               lastName
               phone
@@ -151,14 +165,15 @@ export default {
               dob
               isActive
               doj
+              }
+              totalClients
             }
           }
         `,
         result({ loading }) {
           this.loading = loading;
         },
-        variables() {
-          return {
+        variables:{
             input: {
               limit: this.limit,
               skip: this.skip,
@@ -166,8 +181,7 @@ export default {
             filter: {
               search: this.search,
             },
-          };
-        },
+          },
         fetchPolicy: "cache-and-network",
       };
     },
