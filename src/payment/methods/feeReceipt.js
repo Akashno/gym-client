@@ -17,7 +17,6 @@ var xCenter = Math.floor(pageWidth / 2);
 let doc = new jsPDF("p", "mm", [pageWidth, pageHeight]);
 
 const feeReceipt = (payment) => {
-  debugger
   //fake data
 
   currentY = 2 * lineHeight - 10;

@@ -107,10 +107,6 @@
           <v-spacer></v-spacer>
           <AddPayment :client="clientById" />
         </v-row>
-
-        <!--  -->
-        <!--  -->
-
         <v-card
           flat
           tile
@@ -138,6 +134,8 @@
               outlined
               :key="index"
               width="100px"
+              label
+              
               height="50px"
               class="ma-2 ps-0 pe-4"
               title="Fee Paid"

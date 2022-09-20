@@ -119,7 +119,7 @@
           <v-select
             dense
             outlined
-            :items="['MALE', 'FEMALE']"
+            :items="['MALE', 'FEMALE','OTHER']"
             v-model="client.gender"
           ></v-select>
         </v-col>
@@ -207,20 +207,22 @@ export default {
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { createClient } }) => {
-            debugger;
             const CLIENTS = gql`
               query clients($input: PageInput!, $filter: FilterInput) {
                 clients(input: $input, filter: $filter) {
-                  _id
-                  userCode
-                  firstName
-                  lastName
-                  phone
-                  email
-                  gender
-                  dob
-                  isActive
-                  doj
+              clients{
+                _id
+                userCode
+                firstName
+                lastName
+                phone
+                email
+                gender
+                dob
+                isActive
+                doj
+              }
+              totalClients
                 }
               }
             `;
@@ -229,7 +231,8 @@ export default {
               filter: { search: "" },
             };
             const data = store.readQuery({ query: CLIENTS, variables });
-            data.clients.unshift(createClient);
+            data.clients.clients.unshift(createClient);
+            data.clients.totalClients +=1
             store.writeQuery({ query: CLIENTS, data, variables });
           },
         })

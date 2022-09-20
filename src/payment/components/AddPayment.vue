@@ -142,7 +142,6 @@ export default {
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { addPayment } }) => {
-            debugger
             updatePaymentCache(store,addPayment,this.client)
           },
         })

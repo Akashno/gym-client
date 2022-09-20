@@ -63,7 +63,6 @@ export const updatePaymentCache = (store,addPayment,client) => {
     query: CLIENTBYID,
     variables: { id: client._id },
   });
-  debugger
   if (data2 && data2.clientById) {
     data2.clientById.payments.push(addPayment);
     store.writeQuery({ query: CLIENTBYID, data:data2,variables:{id:client._id} });

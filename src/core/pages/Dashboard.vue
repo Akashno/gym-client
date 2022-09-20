@@ -1,7 +1,10 @@
 <template>
 <v-container   class="pa-0 pa-md-4 ">
-    <v-row dense no-gutters class="" v-if="dashboard" >
+      <v-overlay :value="loading" absolute></v-overlay>
+
+    <v-row dense no-gutters  v-if="dashboard" >
       <v-col cols="12" md="4">
+         
         <TotalGraph :totalClients="dashboard.totalClients" />
       </v-col>
       <v-col cols="12" md="8">
@@ -26,6 +29,11 @@ import TotalGraph from "../components/TotalGraph";
 
 export default {
   name: "Dashboard",
+  data(){
+    return{
+      loading:false,
+    }
+  },
   components: {
     FeeToday,
     LatestJoins,
@@ -59,6 +67,9 @@ apollo: {
           }
         `,
          fetchPolicy: 'cache-and-network',
+         watchLoading(loading){
+          this.loading = loading
+         }
 
       };
     },

@@ -32,6 +32,11 @@
         class="ma-4"
         loading-text="Loading... Please wait"
       >
+       <template v-slot:item.paymentCode="{ item }">
+        <span>
+        #{{item.paymentCode}}
+        </span>
+        </template>
         <template v-slot:item.client="{ item }">
           <router-link
             :to="{ name: 'Client', params: { id: item.user._id } }"
@@ -81,6 +86,13 @@ export default {
       skip: 0,
       search: "",
       headers: [
+         {
+          text: "Payment Id",
+          align: "start",
+          sortable: false,
+          value: "paymentCode",
+          width: 100,
+        },
         {
           text: "Client",
           align: "start",
@@ -119,6 +131,7 @@ export default {
               user {
                 _id
               }
+              paymentCode
               createdAt
               firstName
               lastName

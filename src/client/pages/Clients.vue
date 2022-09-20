@@ -34,6 +34,9 @@
       class="ma-4"
       loading-text="Loading... Please wait"
     >
+<template v-slot:item.userCode="{ item }">
+        #{{item.userCode}}
+      </template>
       <template v-slot:item.client="{ item }">
         <router-link
         
@@ -117,7 +120,7 @@ export default {
       skip: 0,
       headers: [
 
-        { text: "User Code", value: "userCode", width: 110 },
+        { text: "Client Id", value: "userCode", width: 110 },
         {
           text: "Client",
           align: "start",
@@ -154,7 +157,6 @@ export default {
           query clients($input: PageInput!, $filter: FilterInput) {
             clients(input: $input, filter: $filter) {
               clients{
-
               _id
               userCode
               firstName
