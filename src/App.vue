@@ -116,5 +116,5 @@ export default {
 </style>
 <style>
 tbody tr:nth-of-type(odd) {
-   background-color: rgba(212, 52, 52, 0.05);
+   background-color: rgba(255, 255, 255, 0.05);
  }</style>

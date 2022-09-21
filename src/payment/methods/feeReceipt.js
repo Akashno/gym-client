@@ -1,34 +1,120 @@
 import { jsPDF } from "jspdf";
 import moment from "moment";
 
-var pageWidth = 210;
-var pageHeight = 210;
+let pageWidth = 210;
+let pageHeight = 210;
 
-var start = 10;
-var end = 200;
+let start = 15;
+let end = 195;
 
-var normalFontSize = 16;
-var mediumFontSize = 14;
+let black = [36,36,35]
+let grey = [134,134,134]
+let normalFontSize = 16;
+let mediumFontSize = 14;
+let smallFontSize = 12
 
-var lineHeight = Math.floor(normalFontSize / 2);
-var currentY = 2 * lineHeight - 10;
-var xCenter = Math.floor(pageWidth / 2);
+let lineHeight = Math.floor(normalFontSize / 2);
+let currentY = 2 * lineHeight - 10;
+let xCenter = Math.floor(pageWidth / 2);
 
 let doc = new jsPDF("p", "mm", [pageWidth, pageHeight]);
 
 const feeReceipt = (payment) => {
-  //fake data
+  debugger
+  let fullName = payment.firstName + ' ' + payment.lastName
+  let paymentCode =`#${payment.paymentCode}` 
+  let description = `${moment().month(payment.month - 1).format('MMMM')} ${payment.year} gym membership fee`
+  let phone = payment.phone
+  let createdAt =moment(new Date(parseInt( payment.createdAt))).format('DD.MM.YYYY')
+  let amount =   String(payment.amount.toFixed(2))
+
 
   currentY = 2 * lineHeight - 10;
 
   doc = new jsPDF("p", "mm", [pageWidth, pageHeight]);
 
+  doc.addImage(
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTnXf4cf2JV3KFCwCvO6i4fcAGLmbuvRM2KCFubbvDsNitUxWIVuRbX4O0GU2_6eF4lAA&usqp=CAU",
+    "jpg",
+    start-10 ,
+    currentY +10 ,
+    35,
+   29 
+  );
+  seperator(start-6,currentY,end + 6,currentY)
+  seperator(start-6,pageHeight - 8,start-6,currentY)
+  seperator(start-6,pageHeight - 8,start-6,pageHeight-8)
+  seperator(start-6,pageHeight - 8,end + 6,pageHeight-8)
+  seperator(end +6 ,currentY,end +6,pageHeight-8)
   doc.setFontSize(normalFontSize);
-  // doc.addImage("assets/logo.jpg", "jpeg", 100, currentY, 20, 12);
-  nextLine(2.25);
-  seperator();
-  nextLine(1);
-  doc.text(`Order No :`, start, currentY);
+  nextLine(2.5);
+
+  fontType('bold')
+  doc.text(`Dark Fit`, start +20 , currentY + 5);
+
+  fontType('normal')
+  fontColor(grey)
+  fontSize(smallFontSize)
+  doc.text(`Payment Id `, end, currentY,{align:"right"});
+  nextLine(1)
+
+
+
+  fontColor(black)
+  fontSize(mediumFontSize)
+  fontType('bold')
+  doc.text(paymentCode, end, currentY,{align:"right"});
+  fontType('normal')
+  // seperator(start,currentY,end-40,currentY);
+  nextLine(2.5)
+
+  doc.text(`Invoice Date : ${createdAt}`,start,currentY) 
+  nextLine(3)
+  fontColor(grey)
+  fontSize(smallFontSize)
+  doc.text('Bill To',start,currentY)
+  seperator(start + 20,currentY-1,xCenter,currentY-1);
+  doc.text('From',xCenter+5,currentY)
+  seperator(xCenter + 20,currentY-1,end,currentY-1);
+  
+  nextLine(1)
+  fontColor(black)
+  fontSize(mediumFontSize)
+  doc.text(fullName,start,currentY) 
+  doc.text('Dark fit Gym',xCenter+5,currentY)
+  nextLine(1)
+  doc.text(phone,start,currentY) 
+  doc.text('New York , NY 10128',xCenter+5,currentY)
+  nextLine(1)
+  doc.text('United States',xCenter+5,currentY)
+  nextLine(4)
+
+  fontColor(grey)
+  fontSize(smallFontSize)
+  doc.text('Description',start,currentY) 
+  seperator(start + 30,currentY-1,end-20,currentY-1);
+  doc.text('Amount', end, currentY,{align:"right"});
+  nextLine(1.5)
+
+  fontColor(black)
+  fontSize(mediumFontSize)
+  doc.text(description,start,currentY) 
+  doc.text(amount, end, currentY,{align:"right"});
+  nextLine(1.5)
+  seperator(start,currentY-1,end-20,currentY-1);
+
+  fontColor(grey)
+  fontSize(smallFontSize)
+  doc.text('Total',end,currentY,{align:"right"}) 
+  fontColor(black)
+  fontSize(mediumFontSize)
+  nextLine(1.5)
+  fontType('bold')
+  doc.text(amount, end, currentY,{align:"right"});
+
+
+
+
   // nextLine(1);
   // fontSize(mediumFontSize);
   // nextLine(2);
@@ -110,17 +196,19 @@ const feeReceipt = (payment) => {
 
   //design ends
 
-  doc.save(`Invoice.pdf`);
+  doc.save(`${payment.paymentCode}.pdf`);
 };
 
 const fontType = (type) => doc.setFont(undefined, type);
 const fontSize = (size) => doc.setFontSize(size);
+const fontColor = (color) => doc.setTextColor(...color);
 const nextLine = (numberOfLines) =>
+
   (currentY += numberOfLines * lineHeight + 1);
-const seperator = (item) => {
-  console.log(item)
+
+const seperator = (x1,y1,x2,y2) => {
   doc.setDrawColor(210, 210, 210);
-  doc.line(start, currentY, end, currentY);
+  doc.line(x1, y1, x2, y2);
 };
 
 export { feeReceipt };

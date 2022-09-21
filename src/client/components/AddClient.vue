@@ -94,16 +94,16 @@
             offset-y
             max-width="290px"
             min-width="auto"
+            
           >
             <template v-slot:activator="{ on, attrs }">
               <v-text-field
                 :value="moment(client.doj).format('DD/MM/YYYY')"
                 label="Date of Joining"
                 persistent-hint
-                v-bind="attrs"
                 dense
                 outlined
-                v-on="on"
+                readonly
               ></v-text-field>
             </template>
             <v-date-picker
