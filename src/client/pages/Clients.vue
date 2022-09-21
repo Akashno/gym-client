@@ -25,6 +25,7 @@
     </v-row>
     <v-data-table
     v-if="clients"
+        disable-sort
       mobile-breakpoint="0"
       :options.sync="options"
       :headers="headers"

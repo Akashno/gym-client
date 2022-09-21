@@ -112,4 +112,9 @@ export default {
 .cursor-pointer {
   cursor: pointer;
 }
+
 </style>
+<style>
+tbody tr:nth-of-type(odd) {
+   background-color: rgba(212, 52, 52, 0.05);
+ }</style>

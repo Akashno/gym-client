@@ -258,12 +258,18 @@ export default {
               input: { limit: 10, skip: 0 },
               filter: { search: "" },
             };
+            try{
+
             const data = store.readQuery({ query: CLIENTS, variables });
-            let index = data.clients.findIndex(
-              (client) => client._id === updateClient._id
-            );
-            data.clients[index] = updateClient;
-            store.writeQuery({ query: CLIENTS, data, variables });
+              let index = data.clients.findIndex(
+                (client) => client._id === updateClient._id
+              );
+              data.clients[index] = updateClient;
+              store.writeQuery({ query: CLIENTS, data, variables });
+            }catch(error){
+              console.log(error)
+
+            }
           },
           // Optimistic UI
           // Will be treated as a 'fake' result as soon as the request is made
@@ -278,10 +284,10 @@ export default {
           this.isDrawer = false;
         })
         .catch((error) => {
-          let errorMessage = error.graphQLErrors[0].message
+          let errorMessage = error.graphQLErrors[0].message;
           this.$store.commit("setSnackBar", {
             color: "error",
-            text:errorMessage 
+            text: errorMessage,
           });
           this.loading = false;
         });

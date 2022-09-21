@@ -7,6 +7,7 @@ import { setContext } from 'apollo-link-context'
 
 Vue.use(VueApollo)
 const AUTH_TOKEN = 'GYM_USER_TOKEN'
+const USER_INFO = 'GYM_USER'
 
 // Http endpoint
 const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:5000/graphql'
@@ -81,6 +82,7 @@ export async function onLogin(apolloClient, {token,user}) {
 export async function onLogout(apolloClient) {
   if (typeof localStorage !== 'undefined') {
     localStorage.removeItem(AUTH_TOKEN)
+    localStorage.removeItem(USER_INFO)
   }
   if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
   try {

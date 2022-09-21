@@ -23,6 +23,7 @@
           <v-icon x-small class="me-1">mdi-phone</v-icon>
           {{ clientById.phone }}
         </p>
+        <v-chip outlined :color="clientById.isActive ?'success' :'' " x-small>{{clientById.isActive ? 'Active member' : 'Not active'}}</v-chip>
 
       </div>
       <v-spacer></v-spacer>
@@ -134,7 +135,6 @@
               outlined
               :key="index"
               width="100px"
-              label
               
               height="50px"
               class="ma-2 ps-0 pe-4"
@@ -143,11 +143,15 @@
               <v-card color="green" class="px-2 py-3 me-2">{{
                 payment.amount
               }}</v-card>
+              <span class="me-2">
+
               {{
                 moment()
                   .month(payment.month - 1)
                   .format("MMMM")
               }}
+              </span>
+              
             </v-chip>
           </v-row>
         </v-card>

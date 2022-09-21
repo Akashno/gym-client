@@ -26,6 +26,7 @@
     <div class="">
       <v-data-table
         mobile-breakpoint="0"
+        disable-sort
         :headers="headers"
         :loading="loading"
         :items="payments"
@@ -48,6 +49,7 @@
         <template v-slot:item.phone="{ item }">
           {{ item.phone || "-" }}
         </template>
+
         <template v-slot:item.month="{ item }">
           {{
             moment().month(item.month).subtract(1, "month").format("MMMM YYYY")
@@ -55,7 +57,7 @@
         </template>
         <template v-slot:item.createdAt="{ item }">
           {{
-            moment(new Date(parseInt(item.createdAt))).format("DD MMMM YYYY")
+            moment(new Date(parseInt(item.createdAt))).format("DD MMM YYYY")
           }}
         </template>
         <template v-slot:item.amount="{ item }">
@@ -63,7 +65,7 @@
           {{ item.amount.toFixed(2) }}
         </template>
         <template v-slot:item.download="{ item }">
-          <v-btn @click="downloadReceipt(item)" icon>
+          <v-btn @click="downloadReceipt(item)" text>
           <v-icon>mdi-download-outline</v-icon>
           </v-btn>
         </template>
