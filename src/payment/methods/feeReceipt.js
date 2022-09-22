@@ -68,7 +68,7 @@ const feeReceipt = (payment) => {
   // seperator(start,currentY,end-40,currentY);
   nextLine(2.5)
 
-  doc.text(`Invoice Date : ${createdAt}`,start,currentY) 
+  doc.text(`Fee Paid On : ${createdAt}`,start,currentY) 
   nextLine(3)
   fontColor(grey)
   fontSize(smallFontSize)
