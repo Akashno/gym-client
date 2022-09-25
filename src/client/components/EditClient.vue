@@ -234,7 +234,7 @@ export default {
             try{
 
             const data = store.readQuery({ query: CLIENTS, variables });
-              let index = data.clients.findIndex(
+              let index = data.clients.clients.findIndex(
                 (client) => client._id === updateClient._id
               );
               data.clients[index] = updateClient;
