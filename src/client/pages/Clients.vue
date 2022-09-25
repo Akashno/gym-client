@@ -92,7 +92,7 @@ import AddPayment from "../../payment/components/AddPayment.vue";
 import EditClient from "../components/EditClient.vue";
 import moment from "moment";
 import gql from "graphql-tag";
-
+import {clientsGql} from '../api'
 export default {
   components: {
     AddClient,
@@ -154,25 +154,7 @@ export default {
   apollo: {
     clients() {
       return {
-        query: gql`
-          query clients($input: PageInput!, $filter: FilterInput) {
-            clients(input: $input, filter: $filter) {
-              clients{
-              _id
-              userCode
-              firstName
-              lastName
-              phone
-              email
-              gender
-              dob
-              isActive
-              doj
-              }
-              totalClients
-            }
-          }
-        `,
+        query: gql`${clientsGql}`,
         result({ loading }) {
           this.loading = loading;
         },

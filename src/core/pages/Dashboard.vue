@@ -27,6 +27,7 @@ import FeeToday from "../components/FeeToday";
 import LatestJoins from "../components/LatestJoins";
 import MonthGraph from "../components/MonthGraph";
 import TotalGraph from "../components/TotalGraph";
+import {dashboardGql} from '../api'
 
 export default {
   name: "Dashboard",
@@ -45,28 +46,7 @@ export default {
 apollo: {
     dashboard() {
       return {
-        query: gql`
-          query dashboard {
-            dashboard{
-            totalClients
-            totalClientsThisMonth
-            feePaymentsToday {
-                _id
-                firstName
-                lastName
-                dob
-                doj
-            }
-            latestJoins {
-                _id
-                firstName
-                lastName
-                dob
-                doj
-            }
-            }
-          }
-        `,
+        query: gql`${dashboardGql} `,
          fetchPolicy: 'cache-and-network',
          watchLoading(loading){
           this.loading = loading

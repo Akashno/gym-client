@@ -116,6 +116,7 @@
 </template>
 <script>
 import gql from "graphql-tag";
+import { changePasswordGql, updateUserGql } from '../api';
 export default {
   data() {
     return {
@@ -143,18 +144,8 @@ export default {
       this.$apollo
         .mutate({
           // Query
-          mutation: gql`
-            mutation updateUser($input: UserInput) {
-              updateUser(input: $input) {
-                _id
-                firstName
-                lastName
-                phone
-                email
-              }
-            }
-          `,
-          // Parameters
+          mutation: gql`${updateUserGql} `,
+           // Parameters
           variables: {
             input: {
               id: this.$store.state.user?._id,
@@ -207,11 +198,7 @@ export default {
       this.$apollo
         .mutate({
           // Query
-          mutation: gql`
-            mutation changePassword($input: ChangePasswordInput) {
-              changePassword(input: $input)
-            }
-          `,
+          mutation: gql`${changePasswordGql}`,
           // Parameters
           variables: {
             input: {

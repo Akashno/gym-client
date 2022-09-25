@@ -78,6 +78,7 @@
 import gql from "graphql-tag";
 import moment from "moment";
 import { feeReceipt} from '@/payment/methods/feeReceipt'
+import { paymentsGql } from '../api';
 
 export default {
   data() {
@@ -126,25 +127,7 @@ export default {
   apollo: {
     payments() {
       return {
-        query: gql`
-          query payments($input: PageInput!, $filter: FilterInput) {
-            payments(input: $input, filter: $filter) {
-              _id
-              user {
-                _id
-              }
-              paymentCode
-              createdAt
-              firstName
-              lastName
-              phone
-
-              year
-              month
-              amount
-            }
-          }
-        `,
+        query: gql`${paymentsGql} `,
         variables() {
           return {
             input: {

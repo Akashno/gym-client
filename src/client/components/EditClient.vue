@@ -162,6 +162,7 @@
 import DeleteClient from "../components/DeleteClient.vue";
 import gql from "graphql-tag";
 import moment from "moment";
+import { clientsGql, updateClientGql } from '../api';
 export default {
   components: {
     DeleteClient,
@@ -206,21 +207,7 @@ export default {
       this.$apollo
         .mutate({
           // Query
-          mutation: gql`
-            mutation updateClient($input: UserInput) {
-              updateClient(input: $input) {
-                _id
-                firstName
-                lastName
-                phone
-                email
-                gender
-                isActive
-                dob
-                doj
-              }
-            }
-          `,
+          mutation: gql`${updateClientGql} `,
           // Parameters
           variables: {
             input: {
@@ -239,21 +226,7 @@ export default {
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { updateClient } }) => {
-            const CLIENTS = gql`
-              query clients($input: PageInput, $filter: FilterInput) {
-                clients(input: $input, filter: $filter) {
-                  _id
-                  firstName
-                  lastName
-                  phone
-                  email
-                  gender
-                  isActive
-                  dob
-                  doj
-                }
-              }
-            `;
+            const CLIENTS = gql`${clientsGql} `;
             let variables = {
               input: { limit: 10, skip: 0 },
               filter: { search: "" },

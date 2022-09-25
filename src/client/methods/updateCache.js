@@ -1,23 +1,8 @@
+import { paymentsGql } from "@/payment/api";
 import gql from "graphql-tag";
+import {  clientByIdGql } from "../api";
 export const updatePaymentCache = (store,addPayment,client) => {
-  const PAYMENTS = gql`
-    query payments($input: PageInput!, $filter: FilterInput) {
-      payments(input: $input, filter: $filter) {
-        _id
-        user {
-          _id
-        }
-        createdAt
-        firstName
-        lastName
-        phone
-
-        year
-        month
-        amount
-      }
-    }
-  `;
+  const PAYMENTS = gql`${paymentsGql} `;
   let variables = {
     input: {
       limit: 10,
@@ -37,26 +22,7 @@ export const updatePaymentCache = (store,addPayment,client) => {
     data.payments.push(addPayment);
     store.writeQuery({ query: PAYMENTS, data, variables });
   }
-  const CLIENTBYID = gql`
-    query clientById($id: ID!) {
-      clientById(id: $id) {
-        _id
-        firstName
-        lastName
-        phone
-        email
-        gender
-        dob
-        isActive
-        doj
-        payments {
-          year
-          month
-          amount
-        }
-      }
-    }
-  `;
+  const CLIENTBYID = gql`${clientByIdGql} `;
   try{
 
   const data2 = store.readQuery({

@@ -58,6 +58,7 @@
 <script>
 import gql from "graphql-tag";
 import { apolloClient, onLogin } from '@/vue-apollo';
+import { signInGql } from '../api';
 export default {
   data() {
     return {
@@ -81,20 +82,7 @@ export default {
       this.$apollo
         .mutate({
           // Query
-          mutation: gql`
-            mutation signIn($input: SignInInput) {
-              signIn(input: $input){
-                token
-                user{
-                  _id
-                  firstName
-                  lastName
-                  phone
-                  email
-                }
-              }
-            }
-          `,
+          mutation: gql`${signInGql} `,
           // Parameters
           variables: {
             input: {

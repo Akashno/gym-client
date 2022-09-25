@@ -142,6 +142,7 @@
 <script>
 import moment from "moment";
 import gql from "graphql-tag";
+import { clientsGql, createClientGql } from '../api';
 export default {
   data: () => ({
     loading: false,
@@ -181,22 +182,7 @@ export default {
       this.$apollo
         .mutate({
           // Query
-          mutation: gql`
-            mutation createClient($input: UserInput) {
-              createClient(input: $input) {
-                _id
-                userCode
-                firstName
-                lastName
-                phone
-                gender
-                isActive
-                email
-                dob
-                doj
-              }
-            }
-          `,
+          mutation: gql`${createClientGql} `,
           // Parameters
           variables: {
             input: {
@@ -207,26 +193,8 @@ export default {
           // The query will be updated with the optimistic response
           // and then with the real result of the mutation
           update: (store, { data: { createClient } }) => {
-            const CLIENTS = gql`
-              query clients($input: PageInput!, $filter: FilterInput) {
-                clients(input: $input, filter: $filter) {
-              clients{
-                _id
-                userCode
-                firstName
-                lastName
-                phone
-                email
-                gender
-                dob
-                isActive
-                doj
-              }
-              totalClients
-                }
-              }
-            `;
-            let variables = {
+            const CLIENTS = gql`${clientsGql}`
+              let variables = {
               input: { limit: 10, skip: 0 },
               filter: { search: "" },
             };

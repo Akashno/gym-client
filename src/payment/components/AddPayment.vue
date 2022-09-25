@@ -68,6 +68,7 @@
 import moment from "moment";
 import gql from "graphql-tag";
 import {updatePaymentCache} from '@/client/methods/updateCache.js'
+import { addPaymentGql } from '../api';
 export default {
   props: {
     client: Object,
@@ -111,25 +112,7 @@ export default {
       this.$apollo
         .mutate({
           // Query
-          mutation: gql`
-            mutation addPayment($input: PaymentInput) {
-              addPayment(input: $input) {
-                _id
-
-                user {
-                  _id
-                }
-                createdAt
-                firstName
-                lastName
-                phone
-
-                year
-                month
-                amount
-              }
-            }
-          `,
+          mutation: gql`${addPaymentGql} `,
           // Parameters
           variables: {
             input: {

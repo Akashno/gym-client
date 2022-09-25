@@ -29,6 +29,7 @@
 <script>
 
 import gql from "graphql-tag";
+import { clientsGql } from '../api';
 export default {
     props:{
         clientId:{
@@ -61,27 +62,7 @@ export default {
         // and then with the real result of the mutation
         update: (store, { data: { deleteClient } }) => {
       //   // Read the data from our cache for this query.
-        const CLIENTS  = gql`
-          query clients($input: PageInput!, $filter: FilterInput) {
-            clients(input: $input, filter: $filter) {
-
-              clients{
-                _id
-                userCode
-                firstName
-                lastName
-                phone
-                email
-                gender
-                dob
-                isActive
-                doj
-              }
-              totalClients
-
-            }
-          }
-        `
+        const CLIENTS  = gql`${clientsGql} `
             let variables = { input: { limit: 10, skip: 0 },filter:{search:""} };
         const data = store.readQuery({ query: CLIENTS ,variables})
         let clients =   data.clients.clients.filter(client=>client._id !== this.clientId)
