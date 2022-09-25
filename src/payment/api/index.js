@@ -2,6 +2,7 @@ export const paymentsGql = `
     query payments($input: PageInput!, $filter: FilterInput) {
       payments(input: $input, filter: $filter) {
         _id
+        paymentCode
         user {
           _id
         }
