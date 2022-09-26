@@ -159,6 +159,7 @@ export default {
         .then((data) => {
           this.profileBtnLoading = false;
           let user = data.data.updateUser;
+          localStorage.setItem('GYM_USER', JSON.stringify(user))
           this.$store.commit("setUser", user);
           this.$store.commit("setSnackBar", {
             color: "success",
