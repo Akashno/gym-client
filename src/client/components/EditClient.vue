@@ -200,6 +200,7 @@ export default {
   },
   methods: {
     deleted() {
+      this.$emit('deleted')
       this.isDrawer = false;
     },
     updateClient() {

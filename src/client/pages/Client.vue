@@ -28,7 +28,7 @@
       </div>
       <v-spacer></v-spacer>
 
-          <EditClient v-if="clientById" :client="clientById" class="me-2 mt-2" />
+          <EditClient v-if="clientById" :client="clientById" class="me-2 mt-2"  @deleted="clientUpdated"/>
     </v-row>
     <v-row class="mt-10" align="center" v-if="clientById">
       <v-col  cols="6" md="2">
@@ -199,6 +199,13 @@ export default {
     },
   },
   methods: {
+clientUpdated(){
+  debugger
+  this.$router.push({
+    name:'Clients'
+  })
+
+},
     calculateAge(dob) {
       return Math.abs(moment(new Date(parseInt(dob))).diff(moment(), "years"));
     },
