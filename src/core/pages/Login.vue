@@ -62,8 +62,8 @@ import { signInGql } from '../api';
 export default {
   data() {
     return {
-      phone:null,
-      password:null,
+      phone:'9061936162',
+      password:'Admin@123',
       error:"",
       showPassword:false,
       loading :false
