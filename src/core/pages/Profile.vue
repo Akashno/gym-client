@@ -38,6 +38,7 @@
         <v-col cols="12" md="3">
           <v-text-field
             outlined
+            class="email"
             v-model="email"
             hide-details
             dense
@@ -230,4 +231,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
+input[data-autocompleted] {
+    background-color: transparent !important;
+}
+</style>

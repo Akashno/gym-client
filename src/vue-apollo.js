@@ -10,8 +10,8 @@ const AUTH_TOKEN = 'GYM_USER_TOKEN'
 const USER_INFO = 'GYM_USER'
 
 // Http endpoint
-// const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'https://gym-express-api.herokuapp.com/graphql'
-const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'https://localhost:5000/graphql'
+// const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'https://gym-express-api.onrender.com/graphql'
+const httpEndpoint = process.env.VUE_APP_GRAPHQL_HTTP || 'http://localhost:5000/graphql'
 
 const authLink = setContext(async (_, { headers }) => {
   const token = await localStorage.getItem(AUTH_TOKEN)
